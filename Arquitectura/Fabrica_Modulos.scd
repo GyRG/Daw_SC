@@ -10,8 +10,7 @@ s.waitForBoot({
 			~noduloFxFinalPrueba1.free;
 			~noduloFxFinalPrueba2.free;
 			~noduloConvergencia.free;
-			~noduloMezclaFxCentrales.free;
-			~noduloMezclaSintes.free;
+
 		},
 		{
 			//Crear Buses
@@ -31,16 +30,9 @@ s.waitForBoot({
 			//Bus de salida de la mezcla de todo el
 			// conjunto de señales de los efectos centrales
 			~busMezclaFxCentrales = Bus.audio(s,2);
-			//Señal proveniente de cada efect central
-			~busMezclaFxCentralesDelay = Bus.audio(s,2);
-			~busMezclaFxCentralesReverb = Bus.audio(s,2);
-			~busMezclaFxCentralesSideChain = Bus.audio(s,2);
 
 			// Bus de salida de mezcla total de señales de todas las secciones de sintes
 			~busMezclaSintes = Bus.audio(s,2);
-			//Señal proveniente de una sección de sintes
-			~busPercs = Bus.audio(s,2);
-			//Crear Buses
 
 			//Buses entrada y salida de Master
 			~busDAC = 0;
@@ -54,18 +46,6 @@ s.waitForBoot({
 			~busConvergenciaPrueba1 = Bus.audio(s,2);
 			~busConvergenciaPrueba2 = Bus.audio(s,2);
 
-			//Bus de salida de la mezcla de todo el
-			// conjunto de señales de los efectos centrales
-			~busMezclaFxCentrales = Bus.audio(s,2);
-			//Señal proveniente de cada efect central
-			~busMezclaFxCentralesDelay = Bus.audio(s,2);
-			~busMezclaFxCentralesReverb = Bus.audio(s,2);
-			~busMezclaFxCentralesSideChain = Bus.audio(s,2);
-
-			// Bus de salida de mezcla total de señales de todas las secciones de sintes
-			~busMezclaSintes = Bus.audio(s,2);
-			//Señal proveniente de una sección de sintes
-			~busPercs = Bus.audio(s,2);
 	});
 
 	// Conexiones
@@ -111,23 +91,6 @@ s.waitForBoot({
 		~busConvergenciaPrueba2
 	];
 
-	//Lets provenientes de los efectos centrales
-	~inletMezclaFxCentrales = [
-		~busMezclaFxCentralesDelay,
-		~busMezclaFxCentralesReverb,
-		~busMezclaFxCentralesSideChain
-	];
-	~outletMezclaFxCentrales = [
-		~busMezclaFxCentrales
-	];
-
-	// Lets para la señal proveniente de todas las agrupaciones de sintes
-	~inletMezclaSintes = [
-		~busPercs
-	];
-	~outletMezclaSintes = [
-		~busMezclaSintes
-	];
 
 	// Esta función genera una fábrica de efectos
 	// Al ejecutarla hay que introducir los argumentos nombre, función, lags y número de canales
@@ -222,79 +185,45 @@ s.waitForBoot({
 		~outletConvergencia
 	);
 
-	//Mezcla de todos los efectos centrales
-	~crearNodulo.value(\noduloMezclaFxCentrales,{
-		|in,env|
-		var input;
-		input = in;
-		input;
-	},nil,2,
-	~inletMezclaFxCentrales,
-	~outletMezclaFxCentrales
-	);
-
-	//Mezcla de todas las agrupaciones de sintes
-	~crearNodulo.value(\noduloMezclaSintes,{
-		|in,env|
-		var input;
-		input = in;
-		input;
-	},nil,2,
-	~inletMezclaSintes,
-	~outletMezclaSintes
-	);
 
 
 	// Instanciación de los módulos
-s.waitForBoot({
-	// Master
-	~noduloMaster = Synth(\noduloMaster,
-		[\gate,1,\wet,1],
-		target:~grupoMaster,
-		addAction:\addToTail
-	);
+	s.waitForBoot({
+		// Master
+		~noduloMaster = Synth(\noduloMaster,
+			[\gate,1,\wet,1],
+			target:~grupoMaster,
+			addAction:\addToTail
+		);
 
-	//Mezcla Efectos Convergencia
-	~noduloMezclaFxFinales= Synth(\noduloMezclaFxFinales,
-		[\gate,1,\wet,1],
-		target:~grupoFxFinales,
-		addAction:\addToTail
-	);
+		//Mezcla Efectos Convergencia
+		~noduloMezclaFxFinales= Synth(\noduloMezclaFxFinales,
+			[\gate,1,\wet,1],
+			target:~grupoFxFinales,
+			addAction:\addToTail
+		);
 
-	//Prueba efecto final 1
-	~noduloFxFinalPrueba1 = Synth(\noduloFxFinalPrueba1,
-		[\gate,1,\wet,1],
-		target:~grupoFxFinales,
-		addAction:\addToHead
-	);
+		//Prueba efecto final 1
+		~noduloFxFinalPrueba1 = Synth(\noduloFxFinalPrueba1,
+			[\gate,1,\wet,1],
+			target:~grupoFxFinales,
+			addAction:\addToHead
+		);
 
-	//Prueba Efecto Final 2
-	~noduloFxFinalPrueba2 = Synth(\noduloFxFinalPrueba2,
-		[\gate,1,\wet,1],
-		target:~grupoFxFinales,
-		addAction:\addToHead
-	);
+		//Prueba Efecto Final 2
+		~noduloFxFinalPrueba2 = Synth(\noduloFxFinalPrueba2,
+			[\gate,1,\wet,1],
+			target:~grupoFxFinales,
+			addAction:\addToHead
+		);
 
-	//Convergencia
-	~noduloConvergencia = Synth(\noduloConvergencia,
-		[\gate,1,\wet,1],
-		target:~grupoConvergencia,
-		addAction:\addToTail
-	);
+		//Convergencia
+		~noduloConvergencia = Synth(\noduloConvergencia,
+			[\gate,1,\wet,1],
+			target:~grupoConvergencia,
+			addAction:\addToTail
+		);
 
-	// Mezcla de todos los efectos centrales
-	~noduloMezclaFxCentrales = Synth(\noduloMezclaFxCentrales,
-		[\gate,1,\wet,1],
-		target:~grupoMezclaFxCentrales,
-		addAction:\addToTail
-	);
-
-	//Mezcla de agrupaciones de los sintes
-	~noduloMezclaSintes = Synth(\noduloMezclaSintes,
-		[\gate,1,\wet,1],
-		target:~grupoMezclaSintes,
-		addAction:\addToTail
-	);
 	});
 
 };

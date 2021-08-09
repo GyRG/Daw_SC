@@ -84,16 +84,16 @@ s.plotTree;
 		~grupoFxBajos = Group.tail(~grupoBajos);
 
 	// Grupo por percusión de altura definida
-	~grupoPercsPres= Group.tail(~grupoSintes);
+	~grupoSamples= Group.tail(~grupoSintes);
 		// Grupo por cada percusión de altura definida
-		~grupoMartillo = Group.tail(~grupoPercsPres);
+		~grupoMartillo = Group.tail(~grupoSamples);
 			~grupoFxMartillo = Group.tail(~grupoMartillo);
-		~grupoLitos = Group.tail(~grupoPercsPres);
+		~grupoLitos = Group.tail(~grupoSamples);
 			~grupoFxLitos = Group.tail(~grupoLitos);
 		//Grupo Mezcla Percusión altura definida
-		~grupoPercsPresPre = Group.tail(~grupoPercsPres);
+		~grupoSamplesPre = Group.tail(~grupoSamples);
 		// Efectos para todas las percusiones de altura definida
-		~grupoFxPercsPres = Group.tail(~grupoPercsPres);
+		~grupoFxSamples = Group.tail(~grupoSamples);
 
 	//Grupo inputs de audio
 	~grupoAudioExt = Group.tail(~grupoSintes);

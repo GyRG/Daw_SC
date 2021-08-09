@@ -1,84 +1,35 @@
 (//Efectos Percusiones
-if(~inletBomboWSh==[~busBomboWShPre],
+if(~inletPercsPre==[~busPercsPre],
 	{
-		~noduloBomboWSh.free;
-		~noduloBomboPos.free;
-		~noduloPercsPre.free;
+
 		~noduloPercsPos.free;
-		~noduloPercsComp.free;
-},{
-	// Creación de buses
-~busBomboWShPre = Bus.audio(s,2);
-~busBomboWShPos = Bus.audio(s,2);
-~busPercsPre = Bus.audio(s,2);
-~busPercsComPre = Bus.audio(s,2);
-~busPercsComPos = Bus.audio(s,2);
-		// ~busPercs = Bus.audio(s,2);
+		~noduloPercsFx.free;
+	},{
+		// Creación de buses
+
+		~busPercsFx = Bus.audio(s,2);
+		~busPercsFxPos = Bus.audio(s,2);
+
 });
 
 
 
-// Conexiones
-//BomboWSh
-~inletBomboWSh = [~busBomboWShPre];
-~outletBomboWSh = [~busBomboWShPos];
-// BomboPos
-~inletBomboPos = [~busBomboWShPos];
-~outletBomboPos = [~busPercsPre];
-//PercsPre
-~inletPercsPre = [~busPercsPre];
-~outletPercsPre = [~busPercsComPre];
 //PercsFx
-~inletPercsComp = [~busPercsComPre];
-~outletPercsComp = [~busPercsComPos];
+~inletPercsFx = [~busPercsFx];
+~outletPercsFx = [~busPercsFxPos];
 // PercsPos
-~inletPercsPos = [~busPercsComPos];
+~inletPercsPos = [~busPercsFxPos];
 ~outletPercsPos = [~busPercs];
 
-
-
-// WaveShaper del bombo
-~crearNodulo.value(\noduloBomboWSh,{
+// Efectos de las percs
+~crearNodulo.value(\noduloPercsFx,{
 	|in,env|
 	var input;
 	input = in;
 	input;
 },nil,2,
-~inletBomboWSh,
-~outletBomboWSh
-);
-
-// Mezcla del bombo Pos Fx
-~crearNodulo.value(\noduloBomboPos,{
-	|in,env|
-	var input;
-	input = in;
-	input;
-},nil,2,
-~inletBomboPos,
-~outletBomboPos
-);
-
-// Mezcla de todas las Percs
-~crearNodulo.value(\noduloPercsPre,{
-	|in,env|
-	var input;
-	input = in;
-	input;
-},nil,2,
-~inletPercsPre,
-~outletPercsPre
-);
-
-// Efectos de las percs en este caso un compresor
-~crearNodulo.value(\noduloPercsComp,{
-	|in,env|
-	var input;
-	input = in;
-	input;
-},nil,2,
-~inletPercsComp,
-~outletPercsComp
+~inletPercsFx,
+~outletPercsFx
 );
 
 // Mezcla de percusiones Pos Fx
@@ -94,45 +45,22 @@ if(~inletBomboWSh==[~busBomboWShPre],
 
 
 
-//Instanciación de los efectos centrales
+//Instanciación de los efectos de cada conjunto de sintes
 s.waitForBoot({
 
+	// Fx de las percusiones
+	~noduloPercsFx = Synth(\noduloPercsFx,
+		[\gate,1,\wet,1],
+		target:~grupoFxPercs,
+		addAction:\addToHead
+	);
 
-// WaveShaper del bombo
-~noduloBomboWSh = Synth(\noduloBomboWSh,
-	[\gate,1,\wet,1],
-	target:~grupoFxBombo,
-	addAction:\addToTail
-);
-
-
-// Mezcla final del bombo
-~noduloBomboPos = Synth(\noduloBomboPos,
-	[\gate,1,\wet,1],
-	target:~grupoFxBombo,
-	addAction:\addToTail
-);
-
-// Mezcla Percs
-~noduloPercs = Synth(\noduloPercsPre,
-	[\gate,1,\wet,1],
-	target:~grupoPercsPre,
-	addAction:\addToTail
-);
-
-// Compresor de las percusiones
-~noduloPercsComp = Synth(\noduloPercsComp,
-	[\gate,1,\wet,1],
-	target:~grupoFxPercs,
-	addAction:\addToHead
-);
-
-// Mezcla Percs
-~noduloPercsPos = Synth(\noduloPercsPos,
-	[\gate,1,\wet,1],
-	target:~grupoFxPercs,
-	addAction:\addToTail
-);
+	// Mezcla de los efectos de las Percs
+	~noduloPercsPos = Synth(\noduloPercsPos,
+		[\gate,1,\wet,1],
+		target:~grupoFxPercs,
+		addAction:\addToTail
+	);
 });
 )
 
@@ -149,8 +77,7 @@ SynthDef(\ruidoPrueba,
 }).add;
 
 Synth(\ruidoPrueba,[\freq,120,\gate,1,\out,~busBomboWShPre],target:~grupoBombo,addAction:\addToHead);
-// Synth(\ruidoPrueba,[\freq,1200,\gate,1,\out,~busMezclaFxCentralesDelay],target:~grupoMezclaFxCentrales,addAction:\addToHead);
-// Synth(\ruidoPrueba,[\freq,500,\gate,1,\out,~busSeccionPercusiones],target:~grupoMezclaSintes,addAction:\addToHead);
+
 )
 
 
