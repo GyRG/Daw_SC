@@ -30,7 +30,7 @@ SynthDef(\bombo,{
 	sig = sig + LFTri.ar(freq*2,SinOsc.ar(10,0,pi),0.2,0);
 	sig = HPF.ar(sig,50)+LPF.ar(sig,1100,0.7);
 	sig  = sig * env *amp;
-	Out.ar(~busBomboWShPre,sig)
+	Out.ar(~busBombo,sig)
 }).add;
 )
 

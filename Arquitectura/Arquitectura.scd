@@ -1,8 +1,9 @@
 (//Arquitectura
 s.newAllocators;
-s.reboot;
-s.waitForBoot({s.scope(50);
-s.plotTree;
+s.boot;
+s.waitForBoot({
+	s.scope(50);
+	s.plotTree;
 //Grupo Master
 ~grupoMaster = Group.tail(s.defaultGroup);
 
@@ -112,3 +113,4 @@ s.plotTree;
 }
 )
 )
+

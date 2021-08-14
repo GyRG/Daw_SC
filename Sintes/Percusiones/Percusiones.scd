@@ -4,7 +4,7 @@ if(~outletPercsPre==[~busPercsFx],
 		~noduloPercsPre.free;
 	},{
 		//Bus que será procesado por el nódulo PercsFx
-		~busPercsFx = Bus.audio(s,2);
+		// ~busPercsFx = Bus.audio(s,2);
 		//Buses provenientes de cada uno de los sintes procesados por sus respectivos efectos
 		~busBomboPos = Bus.audio(s,2);
 		// ~busTarolaPos = Bus.audio(s,2);
