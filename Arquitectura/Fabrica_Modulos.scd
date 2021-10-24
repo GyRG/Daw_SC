@@ -98,7 +98,7 @@ s.waitForBoot({
 		SynthDef(name, { |gate = 1, wet = 1,amp=1|
 			var in=0, sound, env, lfo;
 			inlets.size.do({|i|
-				in = in + In.ar(inlets[i],numChannels)*(1/inlets.size);
+				in = in + In.ar(inlets[i],numChannels)*(1/inlets.size.sqrt);
 			});
 			// in = In.ar(inlet, numChannels);
 			env = Linen.kr(gate, 2, 1, 2, 2);

@@ -1,17 +1,21 @@
 (//Instrumentos
-if(~inletMezclaSintes==[~busMezclaSintes],
+if(~outletMezclaSintes==[~busMezclaSintes],
 	{
 		~noduloMezclaSintes.free;
 	},{
 		//Buses provenientes de cada una de las secciones de sintes
 		~busPercs = Bus.audio(s,2);
+		~busPads = Bus.audio(s,2);
+		~busBajos = Bus.audio(s,2);
+		~busModulares = Bus.audio(s,2);
 });
 
 
 // Conexiones
 // Lets para la señal proveniente de todas las agrupaciones de sintes
 ~inletMezclaSintes = [
-	~busPercs
+	~busPercs,
+	~busPads
 ];
 ~outletMezclaSintes = [
 	~busMezclaSintes

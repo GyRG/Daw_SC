@@ -3,7 +3,7 @@ s.newAllocators;
 s.boot;
 s.waitForBoot({
 	s.scope(50);
-	s.plotTree;
+	// s.plotTree;
 //Grupo Master
 ~grupoMaster = Group.tail(s.defaultGroup);
 
@@ -36,6 +36,8 @@ s.waitForBoot({
 			~grupoFxTarola = Group.tail(~grupoTarola);
 		~grupoHihat = Group.tail(~grupoPercs);
 			~grupoFxHihat = Group.tail(~grupoHihat);
+		~grupoRide = Group.tail(~grupoPercs);
+			~grupoFxRide= Group.tail(~grupoRide);
 		// Mezcla de todas las percusiones
 		~grupoPercsPre = Group.tail(~grupoPercs);
 		//Efectos para todas las percusiones
@@ -48,8 +50,8 @@ s.waitForBoot({
 			~grupoFxAmbiental = Group.tail(~grupoAmbiental);
 		~grupoRetrowave = Group.tail(~grupoPads);
 			~grupoFxRetrowave = Group.tail(~grupoRetrowave);
-		~grupoChords = Group.tail(~grupoPads);
-			~grupoFxChords = Group.tail(~grupoChords);
+		~grupoStrings = Group.tail(~grupoPads);
+			~grupoFxStrings = Group.tail(~grupoStrings);
 		//Grupo Mezcla Pads
 		~grupoPadsPre = Group.tail(~grupoPads);
 		//Grupo para todos los pads
@@ -59,10 +61,10 @@ s.waitForBoot({
 	// Grupo por modulares
 	~grupoModulares = Group.tail(~grupoSintes);
 		// Grupo por modular
-		~grupoMelodicoMono = Group.tail(~grupoModulares);
-			~grupoFxMelodicoMono = Group.tail(~grupoMelodicoMono);
-		~grupoEnvolventeVariable = Group.tail(~grupoModulares);
-			~grupoFxEnvolventeVariable = Group.tail(~grupoEnvolventeVariable);
+		~grupoMono = Group.tail(~grupoModulares);
+			~grupoFxMono = Group.tail(~grupoMono);
+		~grupoEnvVar = Group.tail(~grupoModulares);
+			~grupoFxEnvVar = Group.tail(~grupoEnvVar);
 		// Grupo Mezcla Modulares
 		~grupoModularesPre = Group.tail(~grupoModulares);
 		// Efectos para todos los modulares
@@ -71,12 +73,12 @@ s.waitForBoot({
 	// Grupo por bajos
 	~grupoBajos = Group.tail(~grupoSintes);
 		// Grupo por cada bajo
-		~grupoDistorsionado = Group.tail(~grupoBajos);
-			~grupoFxDistorsionado = Group.tail(~grupoDistorsionado);
+		~grupoGrowl = Group.tail(~grupoBajos);
+			~grupoFxGrowl = Group.tail(~grupoGrowl);
 		~grupoOscuro = Group.tail(~grupoBajos);
 			~grupoFxOscuro = Group.tail(~grupoOscuro);
-		~grupoPlucked = Group.tail(~grupoBajos);
-			~grupoFxPlucked = Group.tail(~grupoPlucked);
+		~grupoPluck = Group.tail(~grupoBajos);
+			~grupoFxPluck = Group.tail(~grupoPluck);
 		~grupoElectrico = Group.tail(~grupoBajos);
 			~grupoFxElectrico = Group.tail(~grupoElectrico);
 		//Mezcla de todos los bajos
@@ -85,16 +87,16 @@ s.waitForBoot({
 		~grupoFxBajos = Group.tail(~grupoBajos);
 
 	// Grupo por percusión de altura definida
-	~grupoSamples= Group.tail(~grupoSintes);
+	~grupoSamplers= Group.tail(~grupoSintes);
 		// Grupo por cada percusión de altura definida
-		~grupoMartillo = Group.tail(~grupoSamples);
+		~grupoMartillo = Group.tail(~grupoSamplers);
 			~grupoFxMartillo = Group.tail(~grupoMartillo);
-		~grupoLitos = Group.tail(~grupoSamples);
+		~grupoLitos = Group.tail(~grupoSamplers);
 			~grupoFxLitos = Group.tail(~grupoLitos);
 		//Grupo Mezcla Percusión altura definida
-		~grupoSamplesPre = Group.tail(~grupoSamples);
+		~grupoSamplersPre = Group.tail(~grupoSamplers);
 		// Efectos para todas las percusiones de altura definida
-		~grupoFxSamples = Group.tail(~grupoSamples);
+		~grupoFxSamplers = Group.tail(~grupoSamplers);
 
 	//Grupo inputs de audio
 	~grupoAudioExt = Group.tail(~grupoSintes);
@@ -113,4 +115,3 @@ s.waitForBoot({
 }
 )
 )
-
