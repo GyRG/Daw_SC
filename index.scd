@@ -38,7 +38,8 @@ Require("EfectosCentrales/EfectosCentrales.scd");
 
 
 s.queryAllNodes(queryControls:true);
+s.scope(50);
 
 this.inspect;
 
-
+s.quit;

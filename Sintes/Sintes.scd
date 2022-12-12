@@ -8,6 +8,7 @@ if(~outletMezclaSintes==[~busMezclaSintes],
 		~busPads = Bus.audio(s,2);
 		~busBajos = Bus.audio(s,2);
 		~busModulares = Bus.audio(s,2);
+		~busSamplers = Bus.audio(s,2);
 });
 
 
@@ -21,6 +22,7 @@ if(~outletMezclaSintes==[~busMezclaSintes],
 	~busMezclaSintes
 ];
 
+s.waitForBoot({
 // Definición del módulo
 //Mezcla de todas las agrupaciones de sintes
 ~crearNodulo.value(\noduloMezclaSintes,{
@@ -33,9 +35,8 @@ if(~outletMezclaSintes==[~busMezclaSintes],
 ~outletMezclaSintes
 );
 
-
+s.sync;
 //Instanciación de los efectos centrales
-s.waitForBoot({
 	//Mezcla de agrupaciones de los sintes
 	~noduloMezclaSintes = Synth(\noduloMezclaSintes,
 		[\gate,1,\wet,1],

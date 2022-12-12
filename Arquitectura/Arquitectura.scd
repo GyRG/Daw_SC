@@ -2,7 +2,7 @@
 s.newAllocators;
 s.boot;
 s.waitForBoot({
-	s.scope(50);
+	// s.scope(50);
 	// s.plotTree;
 //Grupo Master
 ~grupoMaster = Group.tail(s.defaultGroup);

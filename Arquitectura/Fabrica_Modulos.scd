@@ -118,8 +118,7 @@ s.waitForBoot({
 		}, [0, 0, 0.1] ).add;
 	};
 
-	//Definición de los nodulos
-
+	//Definición de los nodulos del procesamiento final
 	// Master
 	~crearNodulo.value(\noduloMaster,
 		{|in, env|
@@ -188,7 +187,7 @@ s.waitForBoot({
 
 
 	// Instanciación de los módulos
-	s.waitForBoot({
+	s.sync;//Le da tiempo al servidor para cargar el synthDef
 		// Master
 		~noduloMaster = Synth(\noduloMaster,
 			[\gate,1,\wet,1],
@@ -224,7 +223,7 @@ s.waitForBoot({
 			addAction:\addToTail
 		);
 
-	});
+
 
 };
 )
