@@ -1,5 +1,6 @@
 //Pads
 (// Percusiones
+s.waitForBoot({
 if(~outletPadsPre==[~busPadsFx],
 	{
 		~noduloPadsPre.free;
@@ -33,14 +34,13 @@ if(~outletPadsPre==[~busPadsFx],
 ~inletPadsPre,
 ~outletPadsPre
 );
-
+s.sync;
 //Instanciar nódulo Pre efectos del conjunto de sintes
-s.waitForBoot({
 ~noduloPadsPre = Synth(\noduloPadsPre,
 		[\gate,1,\wet,1],
 		target:~grupoPadsPre,
 		addAction:\addToHead
 	);
+s.sync;
 });
 )
-// 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

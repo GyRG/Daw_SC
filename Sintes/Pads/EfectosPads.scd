@@ -1,5 +1,6 @@
 //EfectosPads
 (//Efectos Percusiones
+s.waitForBoot({
 if(~outletPadsPos==[~busPads],
 	{
 
@@ -45,9 +46,8 @@ if(~outletPadsPos==[~busPads],
 );
 
 
-
+s.sync;
 //Instanciación de los efectos de cada conjunto de sintes
-s.waitForBoot({
 
 	// Fx de las percusiones
 	~noduloPadsFx = Synth(\noduloPadsFx,
@@ -62,5 +62,7 @@ s.waitForBoot({
 		target:~grupoFxPads,
 		addAction:\addToTail
 	);
+	s.sync;
+	Require("Pads.scd");
 });
 )

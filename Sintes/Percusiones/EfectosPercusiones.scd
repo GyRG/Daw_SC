@@ -1,4 +1,5 @@
 (//Efectos Percusiones
+s.waitForBoot({
 if(~outletPercsPos==[~busPercs],
 	{
 
@@ -46,8 +47,7 @@ if(~outletPercsPos==[~busPercs],
 
 
 //Instanciación de los efectos de cada conjunto de sintes
-s.waitForBoot({
-
+s.sync;
 	// Fx de las percusiones
 	~noduloPercsFx = Synth(\noduloPercsFx,
 		[\gate,1,\wet,1],
@@ -61,5 +61,8 @@ s.waitForBoot({
 		target:~grupoFxPercs,
 		addAction:\addToTail
 	);
+	s.sync;
+	Require("Percusiones.scd");
+
 });
 )

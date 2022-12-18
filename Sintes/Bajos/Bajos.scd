@@ -1,5 +1,6 @@
 //Bajos
 (// Percusiones
+s.waitForBoot({
 if(~outletBajosPre==[~busBajosFx],
 	{
 		~noduloBajosPre.free;
@@ -33,14 +34,13 @@ if(~outletBajosPre==[~busBajosFx],
 ~inletBajosPre,
 ~outletBajosPre
 );
-
+s.sync;
 //Instanciar nódulo Pre efectos del conjunto de sintes
-s.waitForBoot({
 ~noduloBajosPre = Synth(\noduloBajosPre,
 		[\gate,1,\wet,1],
 		target:~grupoBajosPre,
 		addAction:\addToHead
 	);
+	s.sync;
 });
 )
-// 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

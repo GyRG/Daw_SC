@@ -1,25 +1,6 @@
-//
-
-// s.freeAll
-//
-// ServerTree.removeAll;
-// s.newBusAllocators;
-//
-//
-// ~cajaResonanciaBus= Bus.audio(s, 2);
-// (
-// ~makeNodes = {
-// 	s.bind({
-// 		~efectosPercusiones = Group.new;
-// 		~cajaResonancia = Synth(\cajaResonancia, [\in, ~cajaResonanciaBus], ~efectosPercusiones,'addToHead');
-// 	});
-// };)
 
 
-	ServerTree.add(~makeNodes);
-	ServerTree.run;
-
-
+~busBombo
 (
 SynthDef(\bombo,{
 	|out = 0, freq = 50, amp = 0.7|
@@ -30,10 +11,24 @@ SynthDef(\bombo,{
 	sig = sig + LFTri.ar(freq*2,SinOsc.ar(10,0,pi),0.2,0);
 	sig = HPF.ar(sig,50)+LPF.ar(sig,1100,0.7);
 	sig  = sig * env *amp;
-	Out.ar(~busBombo,sig)
-}).play;
-
+	Out.ar(out,sig)
+}).add;
 )
+(
+
+~bombos = Pdef(\pulso,
+	Pbind(
+		\instrument, \bombo,
+		\dur, 0.75,
+		\freq, 80,
+		\amp, 2,
+		\out, ~busBombo
+));
+)
+~bombos.play;
+y = Synth(\bombo,[\out,~busBombo],~grupoBombo);
+
+
 
 (
 SynthDef(\hh,{

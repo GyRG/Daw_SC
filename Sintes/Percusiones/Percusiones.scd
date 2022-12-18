@@ -1,4 +1,5 @@
 (// Percusiones
+s.waitForBoot({
 if(~outletPercsPre==[~busPercsFx],
 	{
 		~noduloPercsPre.free;
@@ -36,14 +37,14 @@ if(~outletPercsPre==[~busPercsFx],
 ~inletPercsPre,
 ~outletPercsPre
 );
-
+s.sync;
 //Instanciar nódulo Pre efectos del conjunto de sintes
-s.waitForBoot({
 ~noduloPercsPre = Synth(\noduloPercsPre,
 		[\gate,1,\wet,1],
 		target:~grupoPercsPre,
 		addAction:\addToHead
 	);
+	s.sync;
+	Require("Bombo/BomboFx.scd");
 });
 )
-// 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

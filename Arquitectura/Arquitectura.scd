@@ -1,9 +1,9 @@
 (//Arquitectura
 s.newAllocators;
 s.boot;
-s.waitForBoot({
 	// s.scope(50);
 	// s.plotTree;
+s.waitForBoot({
 //Grupo Master
 ~grupoMaster = Group.tail(s.defaultGroup);
 
@@ -112,6 +112,15 @@ s.waitForBoot({
 
  //Grupo para módulo de mezcla de todo el conjunto de sintes
 ~grupoMezclaSintes = Group.tail(~grupoSintes);
+
+	Require("Fabrica_Modulos.scd");
+	// s.sync;
+	Require("../MasterNodes/Final_DAC");
+	// s.sync;
+	Require("../EfectosCentrales/EfectosCentrales.scd");
+
+	Require("../Sintes/Sintes.scd");
+
 }
 )
 )

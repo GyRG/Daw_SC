@@ -1,5 +1,6 @@
 //EfectosBajos
 (//Efectos Percusiones
+s.waitForBoot({
 if(~outletBajosPos==[~busBajos],
 	{
 
@@ -47,8 +48,7 @@ if(~outletBajosPos==[~busBajos],
 
 
 //Instanciación de los efectos de cada conjunto de sintes
-s.waitForBoot({
-
+s.sync;
 	// Fx de las percusiones
 	~noduloBajosFx = Synth(\noduloBajosFx,
 		[\gate,1,\wet,1],
@@ -62,5 +62,7 @@ s.waitForBoot({
 		target:~grupoFxBajos,
 		addAction:\addToTail
 	);
+s.sync;
+	Require("Bajos.scd");
 });
 )

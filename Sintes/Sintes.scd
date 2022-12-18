@@ -1,4 +1,5 @@
 (//Instrumentos
+s.waitForBoot({
 if(~outletMezclaSintes==[~busMezclaSintes],
 	{
 		~noduloMezclaSintes.free;
@@ -22,7 +23,6 @@ if(~outletMezclaSintes==[~busMezclaSintes],
 	~busMezclaSintes
 ];
 
-s.waitForBoot({
 // Definición del módulo
 //Mezcla de todas las agrupaciones de sintes
 ~crearNodulo.value(\noduloMezclaSintes,{
@@ -43,5 +43,12 @@ s.sync;
 		target:~grupoMezclaSintes,
 		addAction:\addToTail
 	);
+
+
+s.sync;
+	Require("Percusiones/EfectosPercusiones.scd");
+	Require("Bajos/EfectosBajos.scd");
+	Require("Pads/EfectosPads.scd");
+
 });
 )

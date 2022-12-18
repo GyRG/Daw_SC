@@ -1,4 +1,5 @@
 (// BomboDef
+s.waitForBoot({
 if(~outletBomboPre==[~busBomboFx],
 	{
 		~noduloBomboPre.free;
@@ -30,12 +31,13 @@ if(~outletBomboPre==[~busBomboFx],
 ~outletBomboPre
 );
 
+	s.sync;
 //Instanciar nódulo Pre efectos del conjunto de sintes
-s.waitForBoot({
 ~noduloBomboPre = Synth(\noduloBomboPre,
 		[\gate,1,\wet,1],
 		target:~grupoBombo,
 		addAction:\addToHead
 	);
+	s.sync;
 });
 )

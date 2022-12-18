@@ -3,24 +3,24 @@
 Require("Arquitectura/Arquitectura");
 
 //Super clase módulo y fábrica de módulos finales
-Require("Arquitectura/Fabrica_Modulos.scd");
+// Require("Arquitectura/Fabrica_Modulos.scd");
 
 
 //Fábrica de sntes
-Require("Sintes/Sintes.scd");
+// Require("Sintes/Sintes.scd");
 //Percusiones
-Require("Sintes/Percusiones/EfectosPercusiones.scd");
-Require("Sintes/Percusiones/Percusiones.scd");
+// Require("Sintes/Percusiones/EfectosPercusiones.scd");
+// Require("Sintes/Percusiones/Percusiones.scd");
 //Todas las percusiones
 
 //Pads
-Require("Sintes/Pads/EfectosPads.scd");
-Require("Sintes/Pads/Pads.scd");
+/*Require("Sintes/Pads/EfectosPads.scd");
+Require("Sintes/Pads/Pads.scd");*/
 //Todos los pads
 
 //Bajos
-Require("Sintes/Bajos/EfectosBajos.scd");
-Require("Sintes/Bajos/Bajos.scd");
+// Require("Sintes/Bajos/EfectosBajos.scd");
+// Require("Sintes/Bajos/Bajos.scd");
 
 //Modulares
 Require("Sintes/Modulares/EfectosModulares.scd");
@@ -41,5 +41,8 @@ s.queryAllNodes(queryControls:true);
 s.scope(50);
 
 this.inspect;
+
+
+s.plotTree;
 
 s.quit;

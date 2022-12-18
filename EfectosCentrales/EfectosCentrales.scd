@@ -1,4 +1,5 @@
 (// Efectos Centrales
+s.waitForBoot({
 if(~inletDelayCentral==[~busDelayCentral],{
 	~noduloDelayCentral.free;
 	~noduloReverbCentral.free;
@@ -101,8 +102,7 @@ if(~inletDelayCentral==[~busDelayCentral],{
 );
 
 //Instanciación de los efectos centrales
-s.waitForBoot({
-
+s.sync;
 // Mezcla de todos los efectos centrales
 	~noduloMezclaFxCentrales = Synth(\noduloMezclaFxCentrales,
 		[\gate,1,\wet,1],
@@ -130,5 +130,6 @@ s.waitForBoot({
 		target:~grupoSideChainCentral,
 		addAction:\addToTail
 	);
+s.sync;
 });
 )

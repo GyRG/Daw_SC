@@ -1,4 +1,5 @@
 (//Efectos de los Bombos
+s.waitForBoot({
 if(~outletBomboPos==[~busBomboPos],
 	{
 
@@ -44,9 +45,8 @@ if(~outletBomboPos==[~busBomboPos],
 );
 
 
-
+s.sync;
 //Instanciación de los efectos de cada conjunto de sintes
-s.waitForBoot({
 
 	// Fx de los Bombos
 	~noduloBomboFx = Synth(\noduloBomboFx,
@@ -61,5 +61,7 @@ s.waitForBoot({
 		target:~grupoFxBombo,
 		addAction:\addToTail
 	);
+	Require("BomboDef.scd");
+s.sync;
 });
 )
