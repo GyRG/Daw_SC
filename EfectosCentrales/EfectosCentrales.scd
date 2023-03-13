@@ -1,62 +1,62 @@
 (// Efectos Centrales
 s.waitForBoot({
-if(~inletDelayCentral==[~busDelayCentral],{
-	~noduloDelayCentral.free;
-	~noduloReverbCentral.free;
-	~noduloSideChainCentral.free;
-	~noduloMezclaFxCentrales.free;
-},
-{
-	// Creación de buses
-	~busDelayCentral = Bus.audio(s,2);
-	~busReverbCentral = Bus.audio(s,2);
-	~busSideChainCentral = Bus.audio(s,2);
+	if(~inletDelayCentral==[~busDelayCentral],{
+		~noduloDelayCentral.free;
+		~noduloReverbCentral.free;
+		~noduloSideChainCentral.free;
+		~noduloMezclaFxCentrales.free;
+	},
+	{
+		// Creación de buses
+		~busDelayCentral = Bus.audio(s,2);
+		~busReverbCentral = Bus.audio(s,2);
+		~busSideChainCentral = Bus.audio(s,2);
 
 
-	//Señal proveniente de cada efect central
-	~busMezclaFxCentralesDelay = Bus.audio(s,2);
-	~busMezclaFxCentralesReverb = Bus.audio(s,2);
-	~busMezclaFxCentralesSideChain = Bus.audio(s,2);
+		//Señal proveniente de cada efect central
+		~busMezclaFxCentralesDelay = Bus.audio(s,2);
+		~busMezclaFxCentralesReverb = Bus.audio(s,2);
+		~busMezclaFxCentralesSideChain = Bus.audio(s,2);
 
-}
-);
+	}
+	);
 
 
-// Conexiones
-~inletDelayCentral =[
-	~busDelayCentral
-];
-~outletDelayCentral = [
-	~busMezclaFxCentralesDelay
-];
+	// Conexiones
+	~inletDelayCentral =[
+		~busDelayCentral
+	];
+	~outletDelayCentral = [
+		~busMezclaFxCentralesDelay
+	];
 
-~inletReverbCentral = [
-	~busReverbCentral
-];
+	~inletReverbCentral = [
+		~busReverbCentral
+	];
 
-~outletReverbCentral = [
-	~busMezclaFxCentralesReverb
-];
+	~outletReverbCentral = [
+		~busMezclaFxCentralesReverb
+	];
 
-~inletSideChainCentral =[
-	~busSideChainCentral
-];
+	~inletSideChainCentral =[
+		~busSideChainCentral
+	];
 
-~outletSideChainCentral = [
-	~busMezclaFxCentralesSideChain
-];
+	~outletSideChainCentral = [
+		~busMezclaFxCentralesSideChain
+	];
 
-//Lets del módulo de cuyas señal resultante será procesada por el módulo convergencia
-~inletMezclaFxCentrales = [
-	~busMezclaFxCentralesDelay,
-	~busMezclaFxCentralesReverb,
-	~busMezclaFxCentralesSideChain
-];
-~outletMezclaFxCentrales = [
-	~busMezclaFxCentrales
-];
+	//Lets del módulo de cuyas señal resultante será procesada por el módulo convergencia
+	~inletMezclaFxCentrales = [
+		~busMezclaFxCentralesDelay,
+		~busMezclaFxCentralesReverb,
+		~busMezclaFxCentralesSideChain
+	];
+	~outletMezclaFxCentrales = [
+		~busMezclaFxCentrales
+	];
 
-//Mezcla de todos los efectos centrales
+	//Mezcla de todos los efectos centrales
 	~crearNodulo.value(\noduloMezclaFxCentrales,{
 		|in,env|
 		var input;
@@ -67,43 +67,43 @@ if(~inletDelayCentral==[~busDelayCentral],{
 	~outletMezclaFxCentrales
 	);
 
-//Definición de los efectos Centrales
-// Delay Central
-~crearNodulo.value(\noduloDelayCentral,{
-	|in,env|
-	var input;
-	input = in;
-	input;
-},nil,2,
-~inletDelayCentral,
-~outletDelayCentral
-);
-
-//Reverb Central
-~crearNodulo.value(\noduloReverbCentral,
-	{|in,env|
+	//Definición de los efectos Centrales
+	// Delay Central
+	~crearNodulo.value(\noduloDelayCentral,{
+		|in,env|
 		var input;
 		input = in;
 		input;
 	},nil,2,
-	~inletReverbCentral,
-	~outletReverbCentral
-);
+	~inletDelayCentral,
+	~outletDelayCentral
+	);
 
-//SideChain
-~crearNodulo.value(\noduloSideChainCentral,{
-	|in,env|
-	var input;
-	input = in;
-	input;
-},nil,2,
-~inletSideChainCentral,
-~outletSideChainCentral
-);
+	//Reverb Central
+	~crearNodulo.value(\noduloReverbCentral,
+		{|in,env|
+			var input;
+			input = in;
+			input;
+		},nil,2,
+		~inletReverbCentral,
+		~outletReverbCentral
+	);
 
-//Instanciación de los efectos centrales
-s.sync;
-// Mezcla de todos los efectos centrales
+	//SideChain
+	~crearNodulo.value(\noduloSideChainCentral,{
+		|in,env|
+		var input;
+		input = in;
+		input;
+	},nil,2,
+	~inletSideChainCentral,
+	~outletSideChainCentral
+	);
+
+	//Instanciación de los efectos centrales
+	s.sync;
+	// Mezcla de todos los efectos centrales
 	~noduloMezclaFxCentrales = Synth(\noduloMezclaFxCentrales,
 		[\gate,1,\wet,1],
 		target:~grupoMezclaFxCentrales,
@@ -130,6 +130,6 @@ s.sync;
 		target:~grupoSideChainCentral,
 		addAction:\addToTail
 	);
-s.sync;
+	s.sync;
 });
 )

@@ -1,6 +1,5 @@
 (//Fábrica de módulos
 s.waitForBoot({
-
 	// Esta función genera una fábrica de efectos
 	// Al ejecutarla hay que introducir los argumentos nombre, función, lags y número de canales
 	~crearNodulo = { |name, func, lags, numChannels = 2, inlets = 0, outlets = 0 |
