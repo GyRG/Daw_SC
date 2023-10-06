@@ -23,6 +23,7 @@ s.waitForBoot({
 	~grupos[\DAC].add(\instanciada-> false);
 	~grupos[\FX].add(\instanciada-> false);
 	~grupos[\SYNTHS].add(\instanciada-> false);
+	~grupos[\SYNTHS][\BASS].add(\instanciada -> false);
 	/*
 
 	//Grupo Master

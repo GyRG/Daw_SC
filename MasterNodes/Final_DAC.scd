@@ -6,6 +6,7 @@ s.waitForBoot({
 	var fxGroup = \FxFinales;
 	var rackOutlet = \outletMaster, rackInlet = \inletConvergencia;
 	var outModule = \moduloMaster;
+	var num_output_channels = 2;
 
 
 	// Liberar Grupos
@@ -42,18 +43,18 @@ s.waitForBoot({
 		\buses -> IdentityDictionary.with(*[
 			//Buses entrada y salida de Master
 			\busDAC -> 0,
-			\busMaster -> Bus.audio(s,2),
+			\busMaster -> Bus.audio(s,num_output_channels),
 			//Buses Efectos Finales
-			\busFxPrueba1 -> Bus.audio(s,2),
-			\busFxPrueba2 -> Bus.audio(s,2),
+			\busFxPrueba1 -> Bus.audio(s,num_output_channels),
+			\busFxPrueba2 -> Bus.audio(s,num_output_channels),
 			//Buses Salida de convergencia a efectos finales
-			\busConvergenciaPrueba1 -> Bus.audio(s,2),
-			\busConvergenciaPrueba2 -> Bus.audio(s,2),
+			\busConvergenciaPrueba1 -> Bus.audio(s,num_output_channels),
+			\busConvergenciaPrueba2 -> Bus.audio(s,num_output_channels),
 			//Bus de salida de la mezcla de todo el
 			// conjunto de señales de los efectos centrales
-			\busMezclaFxCentrales -> Bus.audio(s,2),
+			\busMezclaFxCentrales -> Bus.audio(s,num_output_channels),
 			// Bus de salida de mezcla total de señales de todas las secciones de sintes
-			\busMezclaSintes -> Bus.audio(s,2)
+			\busMezclaSintes -> Bus.audio(s,num_output_channels)
 
 		]);
 	);
@@ -217,6 +218,7 @@ s.waitForBoot({
 
 	s.sync;
 	Require("../EfectosCentrales/FX_Centrales.scd");
+
 };
 )
 );

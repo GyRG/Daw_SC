@@ -10,6 +10,7 @@ s.waitForBoot({
 	var rackOutlet = \outletFXCentrales, rackInlet = [\busDelayIn,\busReverbIn,\busSidechainIn];
 
 	var outModule = \moduloMasterCentralFX;
+	var num_output_channels = 2;
 
 	// Liberar Grupos
 	if(~grupos[rackName][\instanciada] == false,
@@ -27,10 +28,10 @@ s.waitForBoot({
 			~grupos[rackName].add(grupoSalida -> Group.tail(~grupos[rackName][fxGroup]));
 
 			// //Grupo por efectos por tipo de instrumento
-			~grupos[rackName].add(grupoEntrada[0] -> Group.tail(~grupos[rackName][fxGroup]));
-			~grupos[rackName].add(grupoEntrada[1] -> Group.tail(~grupos[rackName][fxGroup]));
-			~grupos[rackName].add(grupoEntrada[2] -> Group.tail(~grupos[rackName][fxGroup]));
+			grupoEntrada.do({|x,i|
+				~grupos[rackName].add(grupoEntrada[i] -> Group.head(~grupos[rackName][fxGroup]));
 
+			});
 
 		}, {
 			s.newBusAllocators;
@@ -47,14 +48,14 @@ s.waitForBoot({
 	~dac[deviceName].add(
 		\buses -> IdentityDictionary.with(*[
 			//Buses entrada del módulo
-			rackInlet[0] -> Bus.audio(s,2),
-			rackInlet[1] -> Bus.audio(s,2),
-			rackInlet[2] -> Bus.audio(s,2),
+			rackInlet[0] -> Bus.audio(s,num_output_channels),
+			rackInlet[1] -> Bus.audio(s,num_output_channels),
+			rackInlet[2] -> Bus.audio(s,num_output_channels),
 
 			//Buses provinientes de cada efecto para la mezcla
-			\busDelayOut -> Bus.audio(s,2),
-			\busReverbOut -> Bus.audio(s,2),
-			\busSidechainOut -> Bus.audio(s,2)
+			\busDelayOut -> Bus.audio(s,num_output_channels),
+			\busReverbOut -> Bus.audio(s,num_output_channels),
+			\busSidechainOut -> Bus.audio(s,num_output_channels)
 		]);
 	);
 
