@@ -6,35 +6,35 @@ s.waitForBoot({
 
 	var deviceName = \SynthsDAC;
 	var mainSynthGroup = \SynthsGroup;
-	var grupoEntrada = [\Percs,\Modulars,\Bass], grupoSalida = \MezclaSynths;
-	var rackOutlet = \outletSynths, rackInlet = [\busPercs,\busPads,\busBajos,\busModulares,\busSamplers];
+	var inGroup = [\Percs,\Modulars,\Bass], outGroup = \MezclaSynths;
+	var rackOutlet = \outletSynths, rackInlet = [\busPercs,\busPads,\busBajosSynth,\busModulares,\busSamplers];
 
 	var outModule = \moduloMezclaSynths;
 
-	// Liberar Grupos
-	if(~grupos[rackName][\instanciada] == false,
+	// Liberar groups
+	if(~groups[rackName][\instanciada] == false,
 		{
 			// El grupo del rack se vacía cuando el generador
 			// se vuelve a ejecutar para evitar creación de nuevos buses
-			~grupos.add(rackName -> IdentityDictionary.new);
+			~groups.add(rackName -> IdentityDictionary.new);
 
 			//Grupo para todos los tipos de instrumentos
-			~grupos[rackName].add(mainSynthGroup -> Group.before(~grupos[nextRackName][nextModuleName]));
+			~groups[rackName].add(mainSynthGroup -> Group.before(~groups[nextRackName][nextModuleName]));
 
 			//Este grupo es para la mezcla de las salidas de cada tipo o sección de instrumentos
-			~grupos[rackName].add(grupoSalida -> Group.tail(~grupos[rackName][mainSynthGroup]));
+			~groups[rackName].add(outGroup -> Group.tail(~groups[rackName][mainSynthGroup]));
 
 			//Para cada grupo que contendrá los módulos que entreguen señal al módulo general de los synths
-			grupoEntrada.do({|sectionName|
-				~grupos[rackName].add(sectionName -> IdentityDictionary.new);
-				("value : "+sectionName).postln;
-				//~grupos[rackName][sectionName].add(sectionName+"Group" -> Group.head(~grupos[rackName][mainSynthGroup]));
-					~grupos[rackName][sectionName].add(\instanciada -> false);
+			inGroup.do({|sectionName|
+				~groups[rackName].add(sectionName -> IdentityDictionary.new);
+				//("value : "+sectionName).postln;
+				//~groups[rackName][sectionName].add(sectionName+"Group" -> Group.head(~groups[rackName][mainSynthGroup]));
+					~groups[rackName][sectionName].add(\instanciada -> false);
 			});
 
 			//Declarar el atributo instanciada = false para cada secciòn
-			grupoEntrada.do({|x,i|
-				~grupos[rackName][grupoEntrada[i]].add(\instanciada -> false);
+			inGroup.do({|x,i|
+				~groups[rackName][inGroup[i]].add(\instanciada -> false);
 			});
 		}, {
 			s.newBusAllocators;
@@ -42,7 +42,7 @@ s.waitForBoot({
 	});
 
 
-	~grupos[rackName].add(\instanciada -> true);
+	~groups[rackName].add(\instanciada -> true);
 
 
 	~dac.add(deviceName -> IdentityDictionary.new);
@@ -74,7 +74,7 @@ s.waitForBoot({
 
 	//Definición de los nodulos del procesamiento final
 	// Mezcla Fx
-	~crearNodulo.value(outModule,
+	~createDevice.value(outModule,
 		{|in, env|
 			var input;
 			input = in;
@@ -96,7 +96,7 @@ s.waitForBoot({
 			//Mezcla
 			outModule -> Synth(outModule,
 				[\gate,1,\wet,1],
-				target:~grupos[rackName][grupoSalida],
+				target:~groups[rackName][outGroup],
 				addAction:\addToTail
 			)
 		]);

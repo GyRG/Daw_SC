@@ -21,7 +21,7 @@ if(~outletBomboPre==[~busBomboFx],
 
 // Definición del módulo
 //Mezcla de la agrupación de sintes
-~crearNodulo.value(\noduloBomboPre,{
+~createDevice.value(\noduloBomboPre,{
 	|in,env|
 	var input;
 	input = in;

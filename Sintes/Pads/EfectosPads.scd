@@ -24,7 +24,7 @@ if(~outletPadsPos==[~busPads],
 ~outletPadsPos = [~busPads];
 
 // Efectos de las Pads
-~crearNodulo.value(\noduloPadsFx,{
+~createDevice.value(\noduloPadsFx,{
 	|in,env|
 	var input;
 	input = in;
@@ -35,7 +35,7 @@ if(~outletPadsPos==[~busPads],
 );
 
 // Mezcla de percusiones Pos Fx
-~crearNodulo.value(\noduloPadsPos,{
+~createDevice.value(\noduloPadsPos,{
 	|in,env|
 	var input;
 	input = in;

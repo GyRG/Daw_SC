@@ -23,7 +23,7 @@ if(~outletModularesPos==[~busModulares],
 ~outletModularesPos = [~busModulares];
 
 // Efectos de las Modulares
-~crearNodulo.value(\noduloModularesFx,{
+~createDevice.value(\noduloModularesFx,{
 	|in,env|
 	var input;
 	input = in;
@@ -34,7 +34,7 @@ if(~outletModularesPos==[~busModulares],
 );
 
 // Mezcla de percusiones Pos Fx
-~crearNodulo.value(\noduloModularesPos,{
+~createDevice.value(\noduloModularesPos,{
 	|in,env|
 	var input;
 	input = in;

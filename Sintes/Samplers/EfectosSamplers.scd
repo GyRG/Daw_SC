@@ -23,7 +23,7 @@ if(~outletSamplersPos==[~busSamplers],
 ~outletSamplersPos = [~busSamplers];
 
 // Efectos de las Samplers
-~crearNodulo.value(\noduloSamplersFx,{
+~createDevice.value(\noduloSamplersFx,{
 	|in,env|
 	var input;
 	input = in;
@@ -34,7 +34,7 @@ if(~outletSamplersPos==[~busSamplers],
 );
 
 // Mezcla de percusiones Pos Fx
-~crearNodulo.value(\noduloSamplersPos,{
+~createDevice.value(\noduloSamplersPos,{
 	|in,env|
 	var input;
 	input = in;

@@ -25,7 +25,7 @@ if(~outletMezclaSintes==[~busMezclaSintes],
 
 // Definición del módulo
 //Mezcla de todas las agrupaciones de sintes
-~crearNodulo.value(\noduloMezclaSintes,{
+~createDevice.value(\noduloMezclaSintes,{
 	|in,env|
 	var input;
 	input = in;

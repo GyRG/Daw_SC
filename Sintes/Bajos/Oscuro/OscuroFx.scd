@@ -22,7 +22,7 @@ if(~outletOscuroPos==[~busOscuroPos],
 ~outletOscuroPos = [~busOscuroPos];
 
 // Efectos de los Oscuros
-~crearNodulo.value(\noduloOscuroFx,{
+~createDevice.value(\noduloOscuroFx,{
 	|in,env|
 	var input;
 	input =  in ;
@@ -34,7 +34,7 @@ if(~outletOscuroPos==[~busOscuroPos],
 );
 
 // Mezcla de Oscuro Pos Fx
-~crearNodulo.value(\noduloOscuroPos,{
+~createDevice.value(\noduloOscuroPos,{
 	|in,env|
 	var input;
 	input = in;

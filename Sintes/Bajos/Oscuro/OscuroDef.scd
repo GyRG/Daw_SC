@@ -21,7 +21,7 @@ if(~outletOscuroPre==[~busOscuroFx],
 
 // Definición del módulo
 //Mezcla de la agrupación de sintes
-~crearNodulo.value(\noduloOscuroPre,{
+~createDevice.value(\noduloOscuroPre,{
 	|in,env|
 	var input;
 	input = in;

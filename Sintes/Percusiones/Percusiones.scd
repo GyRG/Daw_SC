@@ -28,7 +28,7 @@ if(~outletPercsPre==[~busPercsFx],
 
 // Definición del módulo
 //Mezcla de la agrupación de sintes
-~crearNodulo.value(\noduloPercsPre,{
+~createDevice.value(\noduloPercsPre,{
 	|in,env|
 	var input;
 	input = in;

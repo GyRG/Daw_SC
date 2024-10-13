@@ -22,7 +22,7 @@ if(~outletBomboPos==[~busBomboPos],
 ~outletBomboPos = [~busBomboPos];
 
 // Efectos de los Bombos
-~crearNodulo.value(\noduloBomboFx,{
+~createDevice.value(\noduloBomboFx,{
 	|in,env|
 	var input;
 	input =  in ;
@@ -34,7 +34,7 @@ if(~outletBomboPos==[~busBomboPos],
 );
 
 // Mezcla de Bombo Pos Fx
-~crearNodulo.value(\noduloBomboPos,{
+~createDevice.value(\noduloBomboPos,{
 	|in,env|
 	var input;
 	input = in;

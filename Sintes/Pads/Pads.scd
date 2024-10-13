@@ -25,7 +25,7 @@ if(~outletPadsPre==[~busPadsFx],
 
 // Definición del módulo
 //Mezcla de la agrupación de sintes
-~crearNodulo.value(\noduloPadsPre,{
+~createDevice.value(\noduloPadsPre,{
 	|in,env|
 	var input;
 	input = in;

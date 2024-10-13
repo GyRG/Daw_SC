@@ -21,7 +21,7 @@ if(~outletTarolaPos==[~busTarolaPos],
 ~outletTarolaPos = [~busTarolaPos];
 
 // Efectos de los Tarolas
-~crearNodulo.value(\noduloTarolaFx,{
+~createDevice.value(\noduloTarolaFx,{
 	|in,env|
 	var input;
 	input =  in ;
@@ -34,7 +34,7 @@ if(~outletTarolaPos==[~busTarolaPos],
 );
 
 // Mezcla de Tarola Pos Fx
-~crearNodulo.value(\noduloTarolaPos,{
+~createDevice.value(\noduloTarolaPos,{
 	|in,env|
 	var input;
 	input = in;

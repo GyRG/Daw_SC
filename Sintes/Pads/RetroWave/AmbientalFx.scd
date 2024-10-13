@@ -22,7 +22,7 @@ if(~outletAmbientalPos==[~busAmbientalPos],
 ~outletAmbientalPos = [~busAmbientalPos];
 
 // Efectos de los Ambientals
-~crearNodulo.value(\noduloAmbientalFx,{
+~createDevice.value(\noduloAmbientalFx,{
 	|in,env|
 	var input;
 	input =  in ;
@@ -34,7 +34,7 @@ if(~outletAmbientalPos==[~busAmbientalPos],
 );
 
 // Mezcla de Ambiental Pos Fx
-~crearNodulo.value(\noduloAmbientalPos,{
+~createDevice.value(\noduloAmbientalPos,{
 	|in,env|
 	var input;
 	input = in;

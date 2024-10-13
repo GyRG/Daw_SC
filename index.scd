@@ -1,5 +1,5 @@
 
-//Grupos
+//groups
 Require("Arquitectura/Arquitectura");
 
 //Super clase módulo y fábrica de módulos finales
@@ -39,7 +39,7 @@ Require("Sintes/Pads/Pads.scd");*/
 
 //Require("Utils/Utils.scd");
 
-//~validar_Identity.value(~grupos);
+//~validar_Identity.value(~groups);
 
 s.queryAllNodes(queryControls:true);
 s.scope(50);

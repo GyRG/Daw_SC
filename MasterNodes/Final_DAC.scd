@@ -2,29 +2,29 @@
 s.waitForBoot({
 	var rackName = \DAC;
 	var deviceName = \finalDAC;
-	var grupoEntrada = \Convergencia, grupoSalida = \Master;
+	var inGroup = \Convergencia, outGroup = \Master;
 	var fxGroup = \FxFinales;
 	var rackOutlet = \outletMaster, rackInlet = \inletConvergencia;
 	var outModule = \moduloMaster;
 	var num_output_channels = 2;
 
 
-	// Liberar Grupos
-	if(~grupos[rackName][\instanciada] == false,
+	// Liberar groups
+	if(~groups[rackName][\instanciada] == false,
 		{
 
 			// El grupo del rack se vacía cuando el generador
 			// se vuelve a ejecutar para evitar creación de nuevos buses
-			~grupos.add(rackName -> IdentityDictionary.new);
+			~groups.add(rackName -> IdentityDictionary.new);
 
 			//Grupo Master
-			~grupos[rackName].add(grupoSalida -> Group.tail(s.defaultGroup));
+			~groups[rackName].add(outGroup -> Group.tail(s.defaultGroup));
 
 			//Grupo efectos convergencia
-			~grupos[rackName].add(fxGroup -> Group.before(~grupos[rackName][grupoSalida]));
+			~groups[rackName].add(fxGroup -> Group.before(~groups[rackName][outGroup]));
 
 			//Grupo convergencia
-			~grupos[rackName].add(grupoEntrada -> Group.before(~grupos[rackName][fxGroup]));
+			~groups[rackName].add(inGroup -> Group.before(~groups[rackName][fxGroup]));
 
 
 		}, {
@@ -33,7 +33,7 @@ s.waitForBoot({
 	});
 
 
-	~grupos[rackName].add(\instanciateda-> true);
+	~groups[rackName].add(\instanciateda-> true);
 
 
 	~dac.add(deviceName -> IdentityDictionary.new);
@@ -107,7 +107,7 @@ s.waitForBoot({
 
 	//Definición de los nodulos del procesamiento final
 	// Master
-	~crearNodulo.value(outModule,
+	~createDevice.value(outModule,
 		{|in, env|
 			var input;
 			input = in;
@@ -120,7 +120,7 @@ s.waitForBoot({
 	);
 
 	// Mezcla Efectos Convergencia
-	~crearNodulo.value(\moduloMezclaFxFinales,
+	~createDevice.value(\moduloMezclaFxFinales,
 		{|in, env|
 			var input;
 			input = in;
@@ -133,7 +133,7 @@ s.waitForBoot({
 	);
 
 	//Prueba efecto final 1
-	~crearNodulo.value(\moduloFxFinalPrueba1,
+	~createDevice.value(\moduloFxFinalPrueba1,
 		{|in, env|
 			var input;
 			input = in;
@@ -146,7 +146,7 @@ s.waitForBoot({
 	);
 
 	// Prueba efecto final 2
-	~crearNodulo.value(\moduloFxFinalPrueba2,
+	~createDevice.value(\moduloFxFinalPrueba2,
 		{|in, env|
 			var input;
 			input = in;
@@ -159,7 +159,7 @@ s.waitForBoot({
 	);
 
 	// Convergencia
-	~crearNodulo.value(\moduloConvergencia,
+	~createDevice.value(\moduloConvergencia,
 		{|in, env|
 			var input;
 			input = in;
@@ -182,35 +182,35 @@ s.waitForBoot({
 			// Master
 			outModule -> Synth(outModule,
 				[\gate,1,\wet,1],
-				target:~grupos[rackName][grupoSalida],
+				target:~groups[rackName][outGroup],
 				addAction:\addToTail
 			),
 
 			//Mezcla Efectos Convergencia
 			\moduloMezclaFxFinales -> Synth(\moduloMezclaFxFinales,
 				[\gate,1,\wet,1],
-				target:~grupos[rackName][fxGroup],
+				target:~groups[rackName][fxGroup],
 				addAction:\addToTail
 			),
 
 			//Prueba efecto final 1
 			\moduloFxFinalPrueba1 -> Synth(\moduloFxFinalPrueba1,
 				[\gate,1,\wet,1],
-				target:~grupos[rackName][fxGroup],
+				target:~groups[rackName][fxGroup],
 				addAction:\addToHead
 			),
 
 			//Prueba Efecto Final 2
 			\moduloFxFinalPrueba2 -> Synth(\moduloFxFinalPrueba2,
 				[\gate,1,\wet,1],
-				target:~grupos[rackName][fxGroup],
+				target:~groups[rackName][fxGroup],
 				addAction:\addToHead
 			),
 
 			//Convergencia
 			\moduloConvergencia -> Synth(\moduloConvergencia,
 				[\gate,1,\wet,1],
-				target:~grupos[rackName][grupoEntrada],
+				target:~groups[rackName][inGroup],
 				addAction:\addToTail
 			)
 		]);

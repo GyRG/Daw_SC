@@ -5,31 +5,31 @@ s.waitForBoot({
 	var nextRackName = \DAC, nextModuleName = \Convergencia, nextDeviceName = \finalDAC, nextBusName = \busMezclaFxCentrales;
 
 	var deviceName = \fxDAC;
-	var grupoEntrada = [\DelayCentral,\ReverbCentral,\SidechainCentral], grupoSalida = \MezclaFxCentrales;
+	var inGroup = [\DelayCentral,\ReverbCentral,\SidechainCentral], outGroup = \MezclaFxCentrales;
 	var fxGroup = \FxCentrales;
 	var rackOutlet = \outletFXCentrales, rackInlet = [\busDelayIn,\busReverbIn,\busSidechainIn];
 
 	var outModule = \moduloMasterCentralFX;
 	var num_output_channels = 2;
 
-	// Liberar Grupos
-	if(~grupos[rackName][\instanciada] == false,
+	// Liberar groups
+	if(~groups[rackName][\instanciada] == false,
 		{
 
 			// El grupo del rack se vacía cuando el generador
 			// se vuelve a ejecutar para evitar creación de nuevos buses
-			~grupos.add(rackName -> IdentityDictionary.new);
+			~groups.add(rackName -> IdentityDictionary.new);
 
 
 			// //Grupo por efectos generales
-			~grupos[rackName].add(fxGroup -> Group.before(~grupos[nextRackName][nextModuleName]));
+			~groups[rackName].add(fxGroup -> Group.before(~groups[nextRackName][nextModuleName]));
 
 			//Este grupo será únicamente para mezclar las salidas de los efectos
-			~grupos[rackName].add(grupoSalida -> Group.tail(~grupos[rackName][fxGroup]));
+			~groups[rackName].add(outGroup -> Group.tail(~groups[rackName][fxGroup]));
 
 			// //Grupo por efectos por tipo de instrumento
-			grupoEntrada.do({|x,i|
-				~grupos[rackName].add(grupoEntrada[i] -> Group.head(~grupos[rackName][fxGroup]));
+			inGroup.do({|x,i|
+				~groups[rackName].add(inGroup[i] -> Group.head(~groups[rackName][fxGroup]));
 
 			});
 
@@ -39,7 +39,7 @@ s.waitForBoot({
 	});
 
 
-	~grupos[rackName].add(\instanciateda -> true);
+	~groups[rackName].add(\instanciateda -> true);
 
 
 	~dac.add(deviceName -> IdentityDictionary.new);
@@ -102,7 +102,7 @@ s.waitForBoot({
 
 	//Definición de los nodulos del procesamiento final
 	// Mezcla Fx
-	~crearNodulo.value(outModule,
+	~createDevice.value(outModule,
 		{|in, env|
 			var input;
 			input = in;
@@ -116,7 +116,7 @@ s.waitForBoot({
 
 
 	//Delay
-	~crearNodulo.value(\moduloDelay,
+	~createDevice.value(\moduloDelay,
 		{|in, env|
 			var input;
 			input = in;
@@ -128,7 +128,7 @@ s.waitForBoot({
 		~dac[deviceName][\lets][\outletDelay]
 	);
 	//Reverb
-	~crearNodulo.value(\moduloReverb,
+	~createDevice.value(\moduloReverb,
 		{|in, env|
 			var input;
 			input = in;
@@ -140,7 +140,7 @@ s.waitForBoot({
 		~dac[deviceName][\lets][\outletReverb]
 	);
 	//Delay
-	~crearNodulo.value(\moduloSidechain,
+	~createDevice.value(\moduloSidechain,
 		{|in, env|
 			var input;
 			input = in;
@@ -161,28 +161,28 @@ s.waitForBoot({
 			//Mezcla
 			outModule -> Synth(outModule,
 				[\gate,1,\wet,1],
-				target:~grupos[rackName][grupoSalida],
+				target:~groups[rackName][outGroup],
 				addAction:\addToTail
 			),
 
 			//Delay
 			\moduloDelay -> Synth(\moduloDelay,
 				[\gate,1,\wet,1],
-				target:~grupos[rackName][grupoEntrada[0]],
+				target:~groups[rackName][inGroup[0]],
 				addAction:\addToTail
 			),
 
 			//Reverb
 			\moduloReverb -> Synth(\moduloReverb,
 				[\gate,1,\wet,1],
-				target:~grupos[rackName][grupoEntrada[1]],
+				target:~groups[rackName][inGroup[1]],
 				addAction:\addToHead
 			),
 
 			//Sidechain
 			\moduloSidechain -> Synth(\moduloSidechain,
 				[\gate,1,\wet,1],
-				target:~grupos[rackName][grupoEntrada[2]],
+				target:~groups[rackName][inGroup[2]],
 				addAction:\addToHead
 			)
 		]);

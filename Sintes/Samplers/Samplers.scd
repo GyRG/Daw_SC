@@ -24,7 +24,7 @@ if(~outletSamplersPre==[~busSamplersFx],
 
 // Definición del módulo
 //Mezcla de la agrupación de sintes
-~crearNodulo.value(\noduloSamplersPre,{
+~createDevice.value(\noduloSamplersPre,{
 	|in,env|
 	var input;
 	input = in;

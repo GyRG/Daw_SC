@@ -20,7 +20,7 @@ if(~outletTarolaPre==[~busTarolaFx],
 
 // Definición del módulo
 //Mezcla de la agrupación de sintes
-~crearNodulo.value(\noduloTarolaPre,{
+~createDevice.value(\noduloTarolaPre,{
 	|in,env|
 	var input;
 	input = in;

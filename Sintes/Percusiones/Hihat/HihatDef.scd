@@ -20,7 +20,7 @@ if(~outletHihatPre==[~busHihatFx],
 
 // Definición del módulo
 //Mezcla de la agrupación de sintes
-~crearNodulo.value(\noduloHihatPre,{
+~createDevice.value(\noduloHihatPre,{
 	|in,env|
 	var input;
 	input = in;

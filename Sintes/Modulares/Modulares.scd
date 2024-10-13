@@ -24,7 +24,7 @@ if(~outletModularesPre==[~busModularesFx],
 
 // Definición del módulo
 //Mezcla de la agrupación de sintes
-~crearNodulo.value(\noduloModularesPre,{
+~createDevice.value(\noduloModularesPre,{
 	|in,env|
 	var input;
 	input = in;

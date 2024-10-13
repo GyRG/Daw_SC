@@ -3,7 +3,7 @@ s.waitForBoot({
 	var rackName = \SYNTHS;
 	var sectionName = \Bass;
 
-	var nextRackName = \SYNTHS, nextModuleName = \SynthsGroup, nextDeviceName = \SynthsDAC, nextBusName = \busBajos;
+	var nextRackName = \SYNTHS, nextModuleName = \SynthsGroup, nextDeviceName = \SynthsDAC, nextBusName = \busBajosSynth;
 
 	var deviceName = \bassFx;
 	var mainSynthGroup = \BassGroup;
@@ -11,15 +11,15 @@ s.waitForBoot({
 
 	var outModule = \seccionBajos;
 
-	// Liberar Grupos
-	if(~grupos[rackName][sectionName][\instanciada] == false,
+	// Liberar groups
+	if(~groups[rackName][sectionName][\instanciada] == false,
 		{
 			// El grupo de la seccion de instrumentos se vacía cuando el generador
 			// se vuelve a ejecutar para evitar creación de nuevos buses
-			// ~grupos[rackName][sectionName].add(sectionName -> IdentityDictionary.new);
+			// ~groups[rackName][sectionName].add(sectionName -> IdentityDictionary.new);
 
 			//Grupo para todas las secciones de instrumentos
-			~grupos[rackName][sectionName].add(mainSynthGroup -> Group.head(~grupos[nextRackName][nextModuleName]));
+			~groups[rackName][sectionName].add(mainSynthGroup -> Group.head(~groups[nextRackName][nextModuleName]));
 
 
 		}, {
@@ -28,7 +28,7 @@ s.waitForBoot({
 	});
 
 
-	~grupos[rackName][sectionName].add(\instanciada -> true);
+	~groups[rackName][sectionName].add(\instanciada -> true);
 
 
 	~dac.add(deviceName -> IdentityDictionary.new);
@@ -57,7 +57,7 @@ s.waitForBoot({
 
 	//Definición de los nodulos del procesamiento final
 	// Mezcla Fx
-	~crearNodulo.value(outModule,
+	~createDevice.value(outModule,
 		{|in, env|
 			var input;
 			input = in;
@@ -79,7 +79,7 @@ s.waitForBoot({
 			//Mezcla
 			outModule -> Synth(outModule,
 				[\gate,1,\wet,1],
-				target:~grupos[rackName][sectionName][mainSynthGroup],
+				target:~groups[rackName][sectionName][mainSynthGroup],
 				addAction:\addToTail
 			)
 		]);

@@ -21,7 +21,7 @@ if(~outletHihatPos==[~busHihatPos],
 ~outletHihatPos = [~busHihatPos];
 
 // Efectos de los Hihats
-~crearNodulo.value(\noduloHihatFx,{
+~createDevice.value(\noduloHihatFx,{
 	|in,env|
 	var input;
 	input =  in ;
@@ -34,7 +34,7 @@ if(~outletHihatPos==[~busHihatPos],
 );
 
 // Mezcla de Hihat Pos Fx
-~crearNodulo.value(\noduloHihatPos,{
+~createDevice.value(\noduloHihatPos,{
 	|in,env|
 	var input;
 	input = in;

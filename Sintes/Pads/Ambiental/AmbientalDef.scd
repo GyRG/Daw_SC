@@ -21,7 +21,7 @@ if(~outletAmbientalPre==[~busAmbientalFx],
 
 // Definición del módulo
 //Mezcla de la agrupación de sintes
-~crearNodulo.value(\noduloAmbientalPre,{
+~createDevice.value(\noduloAmbientalPre,{
 	|in,env|
 	var input;
 	input = in;

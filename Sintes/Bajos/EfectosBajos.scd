@@ -24,7 +24,7 @@ if(~outletBajosPos==[~busBajos],
 ~outletBajosPos = [~busBajos];
 
 // Efectos de las Bajos
-~crearNodulo.value(\noduloBajosFx,{
+~createDevice.value(\noduloBajosFx,{
 	|in,env|
 	var input;
 	input = in;
@@ -35,7 +35,7 @@ if(~outletBajosPos==[~busBajos],
 );
 
 // Mezcla de percusiones Pos Fx
-~crearNodulo.value(\noduloBajosPos,{
+~createDevice.value(\noduloBajosPos,{
 	|in,env|
 	var input;
 	input = in;

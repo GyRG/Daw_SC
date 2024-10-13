@@ -21,7 +21,7 @@ if(~outletElectricoPre==[~busElectricoFx],
 
 // Definición del módulo
 //Mezcla de la agrupación de sintes
-~crearNodulo.value(\noduloElectricoPre,{
+~createDevice.value(\noduloElectricoPre,{
 	|in,env|
 	var input;
 	input = in;

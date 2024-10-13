@@ -57,7 +57,7 @@ s.waitForBoot({
 	];
 
 	//Mezcla de todos los efectos centrales
-	~crearNodulo.value(\noduloMezclaFxCentrales,{
+	~createDevice.value(\noduloMezclaFxCentrales,{
 		|in,env|
 		var input;
 		input = in;
@@ -69,7 +69,7 @@ s.waitForBoot({
 
 	//Definición de los efectos Centrales
 	// Delay Central
-	~crearNodulo.value(\noduloDelayCentral,{
+	~createDevice.value(\noduloDelayCentral,{
 		|in,env|
 		var input;
 		input = in;
@@ -80,7 +80,7 @@ s.waitForBoot({
 	);
 
 	//Reverb Central
-	~crearNodulo.value(\noduloReverbCentral,
+	~createDevice.value(\noduloReverbCentral,
 		{|in,env|
 			var input;
 			input = in;
@@ -91,7 +91,7 @@ s.waitForBoot({
 	);
 
 	//SideChain
-	~crearNodulo.value(\noduloSideChainCentral,{
+	~createDevice.value(\noduloSideChainCentral,{
 		|in,env|
 		var input;
 		input = in;

@@ -22,7 +22,7 @@ if(~outletElectricoPos==[~busElectricoPos],
 ~outletElectricoPos = [~busElectricoPos];
 
 // Efectos de los Electricos
-~crearNodulo.value(\noduloElectricoFx,{
+~createDevice.value(\noduloElectricoFx,{
 	|in,env|
 	var input;
 	input =  in ;
@@ -34,7 +34,7 @@ if(~outletElectricoPos==[~busElectricoPos],
 );
 
 // Mezcla de Electrico Pos Fx
-~crearNodulo.value(\noduloElectricoPos,{
+~createDevice.value(\noduloElectricoPos,{
 	|in,env|
 	var input;
 	input = in;

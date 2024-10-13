@@ -23,7 +23,7 @@ if(~outletPercsPos==[~busPercs],
 ~outletPercsPos = [~busPercs];
 
 // Efectos de las percs
-~crearNodulo.value(\noduloPercsFx,{
+~createDevice.value(\noduloPercsFx,{
 	|in,env|
 	var input;
 	input = in;
@@ -34,7 +34,7 @@ if(~outletPercsPos==[~busPercs],
 );
 
 // Mezcla de percusiones Pos Fx
-~crearNodulo.value(\noduloPercsPos,{
+~createDevice.value(\noduloPercsPos,{
 	|in,env|
 	var input;
 	input = in;
