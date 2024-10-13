@@ -9,21 +9,13 @@ s.waitForBoot({
 		~grupos = IdentityDictionary.with(*[
 			\DAC -> IdentityDictionary.new,
 			\FX -> IdentityDictionary.new,
-			\SYNTHS -> IdentityDictionary.with(*[
-				\PERCS -> IdentityDictionary.new,
-				\PADS -> IdentityDictionary.new,
-				\MODULAR -> IdentityDictionary.new,
-				\BASS -> IdentityDictionary.new,
-				\SAMPLER -> IdentityDictionary.new,
-				\EXT -> IdentityDictionary.new
-			])
+			\SYNTHS -> IdentityDictionary.new
 		]);
 
 	~dac = IdentityDictionary.new;
 	~grupos[\DAC].add(\instanciada-> false);
 	~grupos[\FX].add(\instanciada-> false);
 	~grupos[\SYNTHS].add(\instanciada-> false);
-	~grupos[\SYNTHS][\BASS].add(\instanciada -> false);
 	/*
 
 	//Grupo Master

@@ -1,4 +1,4 @@
-(//Fábrica de módulos
+(//Final DAC
 s.waitForBoot({
 	var rackName = \DAC;
 	var deviceName = \finalDAC;

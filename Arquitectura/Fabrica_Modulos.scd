@@ -6,7 +6,9 @@ s.waitForBoot({
 		SynthDef(name, { |gate = 1, wet = 1,amp=1|
 			var in=0, sound, env, lfo;
 			inlets.size.do({|i|
-				in = in + In.ar(inlets[i],numChannels)*(1/inlets.size.sqrt);
+				// in = in + In.ar(inlets[i],numChannels)*(1/inlets.size.sqrt);
+				in = in + In.ar(inlets[i],numChannels);
+
 			});
 			// in = In.ar(inlet, numChannels);
 			env = Linen.kr(gate, 2, 1, 2, 2);
@@ -15,10 +17,10 @@ s.waitForBoot({
 			// en instancias de Control
 			sound = SynthDef.wrap(func, lags, [in, env]);
 			name.postln;
-			inlets.size.postln;
 			outlets.size.postln;
-			inlets.postln;
+			inlets.size.postln;
 			outlets.postln;
+			inlets.postln;
 			postln("");
 			outlets.size.do({|i|
 				XOut.ar(outlets[i], wet * env, sound*amp);

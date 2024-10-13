@@ -1,15 +1,15 @@
-(//Fábrica de módulos
+(//Salida de efectos de Secciòn de bajos
 s.waitForBoot({
 	var rackName = \SYNTHS;
-	var sectionName = \BASS;
+	var sectionName = \Bass;
 
-	var nextRackName = \SYNTHS, nextModuleName = \Sintes, nextDeviceName = \SynthsDAC, nextBusName = \busMezclaFxCentrales;
+	var nextRackName = \SYNTHS, nextModuleName = \Sintes, nextDeviceName = \SynthsDAC, nextBusName = \busBajos;
 
 	var deviceName = \bassFx;
 	var mainSynthGroup = \Bajos;
 	var rackOutlet = \busBajos, rackInlet = [\busBajos];
 
-	var outModule = \moduloMezclaSynths;
+	var outModule = \seccionBajos;
 
 	// Liberar Grupos
 	if(~grupos[rackName][sectionName][\instanciada] == false,
@@ -19,7 +19,7 @@ s.waitForBoot({
 			// ~grupos[rackName][sectionName].add(sectionName -> IdentityDictionary.new);
 
 			//Grupo para todas las secciones de instrumentos
-			// ~grupos[rackName][sectionName].add(mainSynthGroup -> Group.tail(~grupos[nextRackName][nextModuleName]));
+			~grupos[rackName][sectionName].add(mainSynthGroup -> Group.head(~grupos[nextRackName][nextModuleName]));
 
 
 		}, {
@@ -28,7 +28,7 @@ s.waitForBoot({
 	});
 
 
-	~grupos[rackName][sectionName].add(\instanciateda -> true);
+	~grupos[rackName][sectionName].add(\instanciada -> true);
 
 
 	~dac.add(deviceName -> IdentityDictionary.new);
@@ -79,7 +79,7 @@ s.waitForBoot({
 			//Mezcla
 			outModule -> Synth(outModule,
 				[\gate,1,\wet,1],
-				target:~grupos[rackName][mainSynthGroup],
+				target:~grupos[rackName][sectionName][mainSynthGroup],
 				addAction:\addToTail
 			)
 		]);

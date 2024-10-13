@@ -23,19 +23,23 @@ Require("Sintes/Pads/Pads.scd");*/
 // Require("Sintes/Bajos/Bajos.scd");
 
 //Modulares
-Require("Sintes/Modulares/EfectosModulares.scd");
-Require("Sintes/Modulares/Modulares.scd");
+//Require("Sintes/Modulares/EfectosModulares.scd");
+//Require("Sintes/Modulares/Modulares.scd");
 
 //Samples
-Require("Sintes/Samplers/EfectosSamplers.scd");
-Require("Sintes/Samplers/Samplers.scd");
+//Require("Sintes/Samplers/EfectosSamplers.scd");
+//Require("Sintes/Samplers/Samplers.scd");
 
 //Externos
 
 
 //Efectos Centrales
-Require("EfectosCentrales/EfectosCentrales.scd");
+//Require("EfectosCentrales/EfectosCentrales.scd");
 
+
+//Require("Utils/Utils.scd");
+
+//~validar_Identity.value(~grupos);
 
 s.queryAllNodes(queryControls:true);
 s.scope(50);

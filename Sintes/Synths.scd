@@ -1,4 +1,4 @@
-(//Fábrica de módulos
+(//Synths
 s.waitForBoot({
 	var rackName = \SYNTHS;
 
@@ -25,8 +25,16 @@ s.waitForBoot({
 			~grupos[rackName].add(grupoSalida -> Group.tail(~grupos[rackName][mainSynthGroup]));
 
 			//Para cada grupo que contendrá los módulos que entreguen señal al módulo general de los synths
+			grupoEntrada.do({|sectionName|
+				~grupos[rackName].add(sectionName -> IdentityDictionary.new);					
+				("value : "+sectionName).postln;
+				//~grupos[rackName][sectionName].add(sectionName+"Group" -> Group.head(~grupos[rackName][mainSynthGroup]));
+					~grupos[rackName][sectionName].add(\instanciada -> false);
+			});
+
+			//Declarar el atributo instanciada = false para cada secciòn
 			grupoEntrada.do({|x,i|
-				~grupos[rackName].add(grupoEntrada[i] -> Group.head(~grupos[rackName][mainSynthGroup]));
+				~grupos[rackName][grupoEntrada[i]].add(\instanciada -> false);
 			});
 		}, {
 			s.newBusAllocators;
@@ -34,7 +42,7 @@ s.waitForBoot({
 	});
 
 
-	~grupos[rackName].add(\instanciateda -> true);
+	~grupos[rackName].add(\instanciada -> true);
 
 
 	~dac.add(deviceName -> IdentityDictionary.new);
@@ -95,6 +103,7 @@ s.waitForBoot({
 	);
 
 	s.sync;
+	Require("./Bajos/BassFx.scd")
 };
 )
 );
