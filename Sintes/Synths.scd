@@ -2,7 +2,7 @@
 s.waitForBoot({
 	var rackName = \SYNTHS;
 
-	var nextRackName = \FX, nextModuleName = \FxCentrales, nextDeviceName = \finalDAC, nextBusName = \busMezclaFxCentrales;
+	var nextRackName = \FX, nextModuleName = \FxCentrales, nextDeviceName = \finalDAC, nextBusName = \busMezclaSintes;
 
 	var deviceName = \SynthsDAC;
 	var mainSynthGroup = \Sintes;
