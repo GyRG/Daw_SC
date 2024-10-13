@@ -5,7 +5,7 @@ s.waitForBoot({
 	var nextRackName = \FX, nextModuleName = \FxCentrales, nextDeviceName = \finalDAC, nextBusName = \busMezclaSintes;
 
 	var deviceName = \SynthsDAC;
-	var mainSynthGroup = \Sintes;
+	var mainSynthGroup = \SynthsGroup;
 	var grupoEntrada = [\Percs,\Modulars,\Bass], grupoSalida = \MezclaSynths;
 	var rackOutlet = \outletSynths, rackInlet = [\busPercs,\busPads,\busBajos,\busModulares,\busSamplers];
 
@@ -26,7 +26,7 @@ s.waitForBoot({
 
 			//Para cada grupo que contendrá los módulos que entreguen señal al módulo general de los synths
 			grupoEntrada.do({|sectionName|
-				~grupos[rackName].add(sectionName -> IdentityDictionary.new);					
+				~grupos[rackName].add(sectionName -> IdentityDictionary.new);
 				("value : "+sectionName).postln;
 				//~grupos[rackName][sectionName].add(sectionName+"Group" -> Group.head(~grupos[rackName][mainSynthGroup]));
 					~grupos[rackName][sectionName].add(\instanciada -> false);

@@ -3,10 +3,10 @@ s.waitForBoot({
 	var rackName = \SYNTHS;
 	var sectionName = \Bass;
 
-	var nextRackName = \SYNTHS, nextModuleName = \Sintes, nextDeviceName = \SynthsDAC, nextBusName = \busBajos;
+	var nextRackName = \SYNTHS, nextModuleName = \SynthsGroup, nextDeviceName = \SynthsDAC, nextBusName = \busBajos;
 
 	var deviceName = \bassFx;
-	var mainSynthGroup = \Bajos;
+	var mainSynthGroup = \BassGroup;
 	var rackOutlet = \busBajos, rackInlet = [\busBajos];
 
 	var outModule = \seccionBajos;
