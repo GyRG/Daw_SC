@@ -4,10 +4,11 @@ s.waitForBoot({
 	var sectionName = \Bass;
 
 	var nextRackName = \SYNTHS, nextModuleName = \SynthsGroup, nextDeviceName = \SynthsDAC, nextBusName = \busBajosSynth;
+	var inGroup = [\bassElectric,\Drone,\Sub], outGroup = \Bass;
 
 	var deviceName = \bassFx;
-	var mainSynthGroup = \BassGroup;
-	var rackOutlet = \busBajos, rackInlet = [\busBajos];
+	var mainSynthGroup = \Bass;
+	var rackOutlet = \busBajos, rackInlet = [\busBassMain];
 
 	var outModule = \seccionBajos;
 
@@ -17,6 +18,13 @@ s.waitForBoot({
 			// El grupo de la seccion de instrumentos se vacía cuando el generador
 			// se vuelve a ejecutar para evitar creación de nuevos buses
 			// ~groups[rackName][sectionName].add(sectionName -> IdentityDictionary.new);
+
+			inGroup.do({|instrumentName|
+				~groups[rackName][sectionName].add(instrumentName -> IdentityDictionary.new);
+				~groups[rackName][sectionName][instrumentName].add(\instanciada -> false);
+
+			});
+		
 
 			//Grupo para todas las secciones de instrumentos
 			~groups[rackName][sectionName].add(mainSynthGroup -> Group.head(~groups[nextRackName][nextModuleName]));
@@ -86,6 +94,7 @@ s.waitForBoot({
 	);
 
 	s.sync;
+	Require("./Electrico/Electric.scd");
 };
 )
 );

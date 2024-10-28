@@ -3,24 +3,26 @@ s.waitForBoot({
 	var rackName = \SYNTHS;
 	var sectionName = \Bass;
 
-	var nextRackName = \SYNTHS, nextModuleName = \SynthsGroup, nextDeviceName = \SynthsDAC, nextBusName = \busBajosSynth;
+	var nextRackName = \SYNTHS, nextModuleName = \Bass, nextDeviceName = \bassFx, nextBusName = \busBassMain;
 
-	var deviceName = \bassFx;
-	var mainSynthGroup = \BassGroup;
-	var rackOutlet = \busBajos, rackInlet = [\busBajos];
+	var instrumentName = \bassElectric;
+	var deviceName = \bassElectric;
+	var mainSynthGroup = \Bass;
+	var rackOutlet = \busBassMain, rackInlet = \busElectrico;
 
-	var outModule = \seccionBajos;
+	var outModule = \electricBass;
 
 	// Liberar groups
-	if(~groups[rackName][sectionName][\instanciada] == false,
+	if(~groups[rackName][sectionName][instrumentName][\instanciada] == false,
 		{
 			// El grupo de la seccion de instrumentos se vacía cuando el generador
 			// se vuelve a ejecutar para evitar creación de nuevos buses
 			// ~groups[rackName][sectionName].add(sectionName -> IdentityDictionary.new);
 
-			//Grupo para todas las secciones de instrumentos
-			~groups[rackName][sectionName].add(mainSynthGroup -> Group.head(~groups[nextRackName][nextModuleName]));
 
+			//Grupo para todas las secciones de instrumentos
+			~groups[rackName][sectionName][instrumentName].add(deviceName -> Group.head(~groups[nextRackName][sectionName][mainSynthGroup]))
+			
 
 		}, {
 			s.newBusAllocators;
@@ -28,17 +30,18 @@ s.waitForBoot({
 	});
 
 
-	~groups[rackName][sectionName].add(\instanciada -> true);
+	~groups[rackName][sectionName][instrumentName].add(\instanciada -> true);
 
 
 	~dac.add(deviceName -> IdentityDictionary.new);
 
 	//Crear Buses
 	~dac[deviceName].add(
-		\buses -> IdentityDictionary.with(*
-			//Buses entrada al módulo de mezcla de sintes
-			Array.fill(rackInlet.size,{arg i; rackInlet[i] -> Bus.audio(s,2)})
-		);
+		\buses -> IdentityDictionary.with(*[
+
+			//Buses entrada al módulo de mezcla de sintes 
+			rackInlet -> Bus.audio(s,2)
+		]);
 	);
 
 
@@ -49,8 +52,11 @@ s.waitForBoot({
 			rackOutlet -> [
 				~dac[nextDeviceName][\buses][nextBusName]
 			],
-			\inletMezcla ->
-			Array.fill(rackInlet.size,{arg i; ~dac[deviceName][\buses][rackInlet[i]]})
+			rackInlet -> [
+				~dac[deviceName][\buses][rackInlet]
+			],
+			//\inletMezcla ->
+			//Array.fill(rackInlet.size,{arg i; ~dac[deviceName][\buses][rackInlet[i]]})
 		]);
 	);
 
@@ -65,7 +71,7 @@ s.waitForBoot({
 		},
 		nil,
 		2,
-		~dac[deviceName][\lets][\inletMezcla],
+		~dac[deviceName][\lets][rackInlet],
 		~dac[deviceName][\lets][rackOutlet]
 	);
 
@@ -79,7 +85,7 @@ s.waitForBoot({
 			//Mezcla
 			outModule -> Synth(outModule,
 				[\gate,1,\wet,1],
-				target:~groups[rackName][sectionName][mainSynthGroup],
+				target:~groups[rackName][sectionName][instrumentName][deviceName],
 				addAction:\addToTail
 			)
 		]);

@@ -103,7 +103,7 @@ s.waitForBoot({
 	);
 
 	s.sync;
-	Require("./Bajos/BassFx.scd")
+	Require("./Bajos/Bass.scd")
 };
 )
 );
