@@ -17,8 +17,6 @@ s.waitForBoot({
 		{
 			// El grupo de la seccion de instrumentos se vacía cuando el generador
 			// se vuelve a ejecutar para evitar creación de nuevos buses
-			// ~groups[rackName][sectionName].add(sectionName -> IdentityDictionary.new);
-
 
 			//Grupo para todas las secciones de instrumentos
 			~groups[rackName][sectionName][instrumentName].add(deviceName -> Group.head(~groups[nextRackName][sectionName][mainSynthGroup]))
@@ -56,7 +54,6 @@ s.waitForBoot({
 			],
 			rackInlet -> [~dac[deviceName][\buses][rackInlet]],
 			//\inletMezcla ->
-			//Array.fill(rackInlet.size,{arg i; ~dac[deviceName][\buses][rackInlet[i]]})
 		]);
 	);
 

@@ -50,6 +50,6 @@ SynthDef(\bass,{
 		\freq, Prand([40,41,44,47,48,52].midicps, inf)
 ));
 
-~bass.play;
+~bass.stop;
 )
 )

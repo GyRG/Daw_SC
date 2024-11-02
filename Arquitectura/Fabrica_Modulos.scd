@@ -21,6 +21,7 @@ s.waitForBoot({
 			inlets.size.postln;
 			outlets.postln;
 			inlets.postln;
+			"".postln;
 			outlets.size.do({|i|
 				XOut.ar(outlets[i], wet * env, sound*amp);
 			});

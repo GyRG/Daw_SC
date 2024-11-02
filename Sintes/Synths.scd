@@ -27,8 +27,6 @@ s.waitForBoot({
 			//Para cada grupo que contendrá los módulos que entreguen señal al módulo general de los synths
 			inGroup.do({|sectionName|
 				~groups[rackName].add(sectionName -> IdentityDictionary.new);
-				//("value : "+sectionName).postln;
-				//~groups[rackName][sectionName].add(sectionName+"Group" -> Group.head(~groups[rackName][mainSynthGroup]));
 					~groups[rackName][sectionName].add(\instanciada -> false);
 			});
 

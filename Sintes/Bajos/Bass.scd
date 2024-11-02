@@ -17,7 +17,6 @@ s.waitForBoot({
 		{
 			// El grupo de la seccion de instrumentos se vacía cuando el generador
 			// se vuelve a ejecutar para evitar creación de nuevos buses
-			// ~groups[rackName][sectionName].add(sectionName -> IdentityDictionary.new);
 
 			inGroup.do({|instrumentName|
 				~groups[rackName][sectionName].add(instrumentName -> IdentityDictionary.new);
