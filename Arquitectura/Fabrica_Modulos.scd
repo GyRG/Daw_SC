@@ -3,7 +3,7 @@ s.waitForBoot({
 	// Esta función genera una fábrica de efectos
 	// Al ejecutarla hay que introducir los argumentos nombre, función, lags y número de canales
 	~createDevice = { |name, func, lags, numChannels = 2, inlets = 0, outlets = 0 |
-		SynthDef(name, { |gate = 1, wet = 1,amp=0.9|
+		SynthDef(name, { |gate = 1, wet = 1,amp=0.7|
 			var in=0, sound, env, lfo;
 			inlets.size.do({|i|
 				// in = in + In.ar(inlets[i],numChannels)*(1/inlets.size.sqrt);
@@ -21,7 +21,6 @@ s.waitForBoot({
 			inlets.size.postln;
 			outlets.postln;
 			inlets.postln;
-			postln("");
 			outlets.size.do({|i|
 				XOut.ar(outlets[i], wet * env, sound*amp);
 			});

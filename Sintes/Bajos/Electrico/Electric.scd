@@ -6,9 +6,9 @@ s.waitForBoot({
 	var nextRackName = \SYNTHS, nextModuleName = \Bass, nextDeviceName = \bassFx, nextBusName = \busBassMain;
 
 	var instrumentName = \bassElectric;
-	var deviceName = \bassElectric;
+	var deviceName = \bassElectricDVC;
 	var mainSynthGroup = \Bass;
-	var rackOutlet = \busBassMain, rackInlet = \busElectrico;
+	var rackOutlet = \busBassMain, rackInlet = \busElectricoInstance;
 
 	var outModule = \electricBass;
 
@@ -22,11 +22,13 @@ s.waitForBoot({
 
 			//Grupo para todas las secciones de instrumentos
 			~groups[rackName][sectionName][instrumentName].add(deviceName -> Group.head(~groups[nextRackName][sectionName][mainSynthGroup]))
-			
+
 
 		}, {
-			s.newBusAllocators;
+			//s.newBusAllocators;
 			~dac[deviceName][\modulos].do({|n| n.free});
+			~dac[deviceName][\buses].do({|n| n.free});
+
 	});
 
 
@@ -39,7 +41,7 @@ s.waitForBoot({
 	~dac[deviceName].add(
 		\buses -> IdentityDictionary.with(*[
 
-			//Buses entrada al módulo de mezcla de sintes 
+			//Buses entrada al módulo de mezcla de sintes
 			rackInlet -> Bus.audio(s,2)
 		]);
 	);
@@ -52,9 +54,7 @@ s.waitForBoot({
 			rackOutlet -> [
 				~dac[nextDeviceName][\buses][nextBusName]
 			],
-			rackInlet -> [
-				~dac[deviceName][\buses][rackInlet]
-			],
+			rackInlet -> [~dac[deviceName][\buses][rackInlet]],
 			//\inletMezcla ->
 			//Array.fill(rackInlet.size,{arg i; ~dac[deviceName][\buses][rackInlet[i]]})
 		]);
@@ -66,8 +66,10 @@ s.waitForBoot({
 	~createDevice.value(outModule,
 		{|in, env|
 			var input;
-			input = in;
-			input;
+
+			input =  HPF.ar(in,150)+LPF.ar(in,1800,0.8);
+
+			input = input * 0.5;
 		},
 		nil,
 		2,
@@ -95,4 +97,5 @@ s.waitForBoot({
 };
 )
 );
+
 
