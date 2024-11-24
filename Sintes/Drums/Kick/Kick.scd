@@ -1,51 +1,47 @@
 (//Salida de efectos de Secciòn de bajos
 s.waitForBoot({
 	var rackName = \SYNTHS;
-	var sectionName = \Pads;
+	var sectionName = \Drums;
 
-	var nextRackName = \SYNTHS, nextModuleName = \SynthsGroup, nextDeviceName = \SynthsDAC, nextBusName = \busPadsSynth;
-	var inGroup = [\padsPink,\padsBlue,\padsSun], outGroup = \Pads;
+	var nextRackName = \SYNTHS, nextModuleName = \Drums, nextDeviceName = \drumsFx, nextBusName = \busDrumsMain;
 
-	var deviceName = \padsFx;
-	var mainSynthGroup = \Pads;
-	var rackOutlet = \busPads, rackInlet = [\busPadsMain];
+	var instrumentName = \drumsKick;
+	var deviceName = \drumsKickDVC;
+	var mainSynthGroup = \Drums;
+	var rackOutlet = \busDrumsMain, rackInlet = \busKickInstance;
 
-	var outModule = \seccionPads;
+	var outModule = \kickDrums;
 
 	// Liberar groups
-	if(~groups[rackName][sectionName][\instanciada] == false,
+	if(~groups[rackName][sectionName][instrumentName][\instanciada] == false,
 		{
 			// El grupo de la seccion de instrumentos se vacía cuando el generador
 			// se vuelve a ejecutar para evitar creación de nuevos buses
 
-			inGroup.do({|instrumentName|
-				~groups[rackName][sectionName].add(instrumentName -> IdentityDictionary.new);
-				~groups[rackName][sectionName][instrumentName].add(\instanciada -> false);
-
-			});
-		
-
 			//Grupo para todas las secciones de instrumentos
-			~groups[rackName][sectionName].add(mainSynthGroup -> Group.head(~groups[nextRackName][nextModuleName]));
+			~groups[rackName][sectionName][instrumentName].add(deviceName -> Group.head(~groups[nextRackName][sectionName][mainSynthGroup]))
 
 
 		}, {
-			s.newBusAllocators;
+			//s.newBusAllocators;
 			~dac[deviceName][\modulos].do({|n| n.free});
+			~dac[deviceName][\buses].do({|n| n.free});
+
 	});
 
 
-	~groups[rackName][sectionName].add(\instanciada -> true);
+	~groups[rackName][sectionName][instrumentName].add(\instanciada -> true);
 
 
 	~dac.add(deviceName -> IdentityDictionary.new);
 
 	//Crear Buses
 	~dac[deviceName].add(
-		\buses -> IdentityDictionary.with(*
+		\buses -> IdentityDictionary.with(*[
+
 			//Buses entrada al módulo de mezcla de sintes
-			Array.fill(rackInlet.size,{arg i; rackInlet[i] -> Bus.audio(s,2)})
-		);
+			rackInlet -> Bus.audio(s,2)
+		]);
 	);
 
 
@@ -56,8 +52,8 @@ s.waitForBoot({
 			rackOutlet -> [
 				~dac[nextDeviceName][\buses][nextBusName]
 			],
-			\inletMezcla ->
-			Array.fill(rackInlet.size,{arg i; ~dac[deviceName][\buses][rackInlet[i]]})
+			rackInlet -> [~dac[deviceName][\buses][rackInlet]],
+			//\inletMezcla ->
 		]);
 	);
 
@@ -67,12 +63,16 @@ s.waitForBoot({
 	~createDevice.value(outModule,
 		{|in, env|
 			var input;
-			input = in;
-			input;
+			var buff_num;
+			buff_num = Buffer.alloc(s, 1024, 1, { |buf| buf.chebyMsg([1,0,1,1,0,1])});
+			input =  HPF.ar(in,80,1.2)+LPF.ar(in,1200,0.8);
+			// input = Shaper.ar(buff_num,input,0.5);
+
+			input = Compander.ar(input,0.0,0.5);
 		},
 		nil,
 		2,
-		~dac[deviceName][\lets][\inletMezcla],
+		~dac[deviceName][\lets][rackInlet],
 		~dac[deviceName][\lets][rackOutlet]
 	);
 
@@ -86,15 +86,15 @@ s.waitForBoot({
 			//Mezcla
 			outModule -> Synth(outModule,
 				[\gate,1,\wet,1],
-				target:~groups[rackName][sectionName][mainSynthGroup],
+				target:~groups[rackName][sectionName][instrumentName][deviceName],
 				addAction:\addToTail
 			)
 		]);
 	);
 
 	s.sync;
-	Require("./Pink/Pink.scd");
 };
 )
 );
+
 

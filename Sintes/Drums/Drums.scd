@@ -1,16 +1,16 @@
 (//Salida de efectos de Secciòn de bajos
 s.waitForBoot({
 	var rackName = \SYNTHS;
-	var sectionName = \Pads;
+	var sectionName = \Drums;
 
-	var nextRackName = \SYNTHS, nextModuleName = \SynthsGroup, nextDeviceName = \SynthsDAC, nextBusName = \busPadsSynth;
-	var inGroup = [\padsPink,\padsBlue,\padsSun], outGroup = \Pads;
+	var nextRackName = \SYNTHS, nextModuleName = \SynthsGroup, nextDeviceName = \SynthsDAC, nextBusName = \busDrumsSynth;
+	var inGroup = [\drumsKick,\drumSnare,\drumHh], outGroup = \Drums;
 
-	var deviceName = \padsFx;
-	var mainSynthGroup = \Pads;
-	var rackOutlet = \busPads, rackInlet = [\busPadsMain];
+	var deviceName = \drumsFx;
+	var mainSynthGroup = \Drums;
+	var rackOutlet = \busDrums, rackInlet = [\busDrumsMain];
 
-	var outModule = \seccionPads;
+	var outModule = \seccionDrums;
 
 	// Liberar groups
 	if(~groups[rackName][sectionName][\instanciada] == false,
@@ -93,7 +93,7 @@ s.waitForBoot({
 	);
 
 	s.sync;
-	Require("./Pink/Pink.scd");
+	Require("./Kick/Kick.scd");
 };
 )
 );
