@@ -1,16 +1,16 @@
 (//Salida de efectos de Secciòn de bajos
 s.waitForBoot({
 	var rackName = \SYNTHS;
-	var sectionName = \Bass;
+	var sectionName = \Pads;
 
-	var nextRackName = \SYNTHS, nextModuleName = \Bass, nextDeviceName = \bassFx, nextBusName = \busBassMain;
+	var nextRackName = \SYNTHS, nextModuleName = \Pads, nextDeviceName = \padsFx, nextBusName = \busPadsMain;
 
-	var instrumentName = \bassElectric;
-	var deviceName = \bassElectricDVC;
-	var mainSynthGroup = \Bass;
-	var rackOutlet = \busBassMain, rackInlet = \busElectricoInstance;
+	var instrumentName = \padsPink;
+	var deviceName = \padsPinkDVC;
+	var mainSynthGroup = \Pads;
+	var rackOutlet = \busPadsMain, rackInlet = \busPinkInstance;
 
-	var outModule = \electricBass;
+	var outModule = \pinkPads;
 
 	// Liberar groups
 	if(~groups[rackName][sectionName][instrumentName][\instanciada] == false,
@@ -64,7 +64,7 @@ s.waitForBoot({
 		{|in, env|
 			var input;
 
-			input =  HPF.ar(in,150)+LPF.ar(in,2800,0.8);
+			input =  HPF.ar(in,500)+LPF.ar(in,2800,0.8);
 
 			input = input * 0.5;
 		},

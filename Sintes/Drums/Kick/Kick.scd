@@ -1,16 +1,16 @@
 (//Salida de efectos de Secciòn de bajos
 s.waitForBoot({
 	var rackName = \SYNTHS;
-	var sectionName = \Bass;
+	var sectionName = \Drums;
 
-	var nextRackName = \SYNTHS, nextModuleName = \Bass, nextDeviceName = \bassFx, nextBusName = \busBassMain;
+	var nextRackName = \SYNTHS, nextModuleName = \Drums, nextDeviceName = \drumsFx, nextBusName = \busDrumsMain;
 
-	var instrumentName = \bassElectric;
-	var deviceName = \bassElectricDVC;
-	var mainSynthGroup = \Bass;
-	var rackOutlet = \busBassMain, rackInlet = \busElectricoInstance;
+	var instrumentName = \drumsKick;
+	var deviceName = \drumsKickDVC;
+	var mainSynthGroup = \Drums;
+	var rackOutlet = \busDrumsMain, rackInlet = \busKickInstance;
 
-	var outModule = \electricBass;
+	var outModule = \kickDrums;
 
 	// Liberar groups
 	if(~groups[rackName][sectionName][instrumentName][\instanciada] == false,
@@ -63,10 +63,12 @@ s.waitForBoot({
 	~createDevice.value(outModule,
 		{|in, env|
 			var input;
+			var buff_num;
+			buff_num = Buffer.alloc(s, 1024, 1, { |buf| buf.chebyMsg([1,0,1,1,0,1])});
+			input =  HPF.ar(in,80,1.2)+LPF.ar(in,1200,0.8);
+			// input = Shaper.ar(buff_num,input,0.5);
 
-			input =  HPF.ar(in,150)+LPF.ar(in,2800,0.8);
-
-			input = input * 0.5;
+			input = Compander.ar(input,0.0,0.5);
 		},
 		nil,
 		2,
