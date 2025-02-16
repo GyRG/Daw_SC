@@ -1,16 +1,16 @@
 (//Salida de efectos de Secciòn de bajos
 s.waitForBoot({
 	var rackName = \SYNTHS;
-	var sectionName = \Bass;
+	var sectionName = \Monos;
 
-	var nextRackName = \SYNTHS, nextModuleName = \Bass, nextDeviceName = \bassFx, nextBusName = \busBassMain;
+	var nextRackName = \SYNTHS, nextModuleName = \Monos, nextDeviceName = \monosFx, nextBusName = \busMonosMain;
 
-	var instrumentName = \bassElectric;
-	var deviceName = \bassElectricDVC;
-	var mainSynthGroup = \Bass;
-	var rackOutlet = \busBassMain, rackInlet = \busElectricoInstance;
+	var instrumentName = \monosFm;
+	var deviceName = \monosFmDVC;
+	var mainSynthGroup = \Monos;
+	var rackOutlet = \busMonosMain, rackInlet = \busFmInstance;
 
-	var outModule = \electricBass;
+	var outModule = \fmMonos;
 
 	// Liberar groups
 	if(~groups[rackName][sectionName][instrumentName][\instanciada] == false,
@@ -63,10 +63,10 @@ s.waitForBoot({
 	~createDevice.value(outModule,
 		{|in, env|
 			var input;
-			input = CrossoverDistortion.ar(in, amp: 0.1, smooth: 0.8, mul: 0.04, add: 0);
-			input = input + BPF.ar(in,500,1)+ HPF.ar(in,700);
-			input = Compander.ar(input,0,0.4,0.6);
 
+			input =  HPF.ar(in,500)+LPF.ar(in,2800,0.8);
+
+			input = input * 0.5;
 		},
 		nil,
 		2,

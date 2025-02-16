@@ -1,16 +1,16 @@
 (//Salida de efectos de Secciòn de bajos
 s.waitForBoot({
 	var rackName = \SYNTHS;
-	var sectionName = \Drums;
+	var sectionName = \External;
 
-	var nextRackName = \SYNTHS, nextModuleName = \SynthsGroup, nextDeviceName = \SynthsDAC, nextBusName = \busDrumsSynth;
-	var inGroup = [\drumsKick,\drumsSnare,\drumsHh,\drumsRide,\drumsTom,\drumsCrash], outGroup = \Drums;
+	var nextRackName = \SYNTHS, nextModuleName = \SynthsGroup, nextDeviceName = \SynthsDAC, nextBusName = \busExternoSynth;
+	var inGroup = [\externalMicroFreak], outGroup = \External;
 
-	var deviceName = \drumsFx;
-	var mainSynthGroup = \Drums;
-	var rackOutlet = \busDrums, rackInlet = [\busKickMain, \busHhMain];
+	var deviceName = \externalFx;
+	var mainSynthGroup = \External;
+	var rackOutlet = \busExterno, rackInlet = [\busExternalMain];
 
-	var outModule = \seccionDrums;
+	var outModule = \seccionExterno;
 
 	// Liberar groups
 	if(~groups[rackName][sectionName][\instanciada] == false,
@@ -23,7 +23,7 @@ s.waitForBoot({
 				~groups[rackName][sectionName][instrumentName].add(\instanciada -> false);
 
 			});
-
+		
 
 			//Grupo para todas las secciones de instrumentos
 			~groups[rackName][sectionName].add(mainSynthGroup -> Group.head(~groups[nextRackName][nextModuleName]));
@@ -93,12 +93,7 @@ s.waitForBoot({
 	);
 
 	s.sync;
-//	Require("./Snare/Snare.scd");
-	Require("./Hh/Hh.scd");
-	Require("./Kick/Kick.scd");
-//	Require("./Crash/Crash.scd");
-//	Require("./Ride/Ride.scd");
-//	Require("./Tom/Tom.scd");
+	Require("./MicroFreak/MicroFreak.scd");
 };
 )
 );

@@ -1,16 +1,16 @@
 (//Salida de efectos de Secciòn de bajos
 s.waitForBoot({
 	var rackName = \SYNTHS;
-	var sectionName = \Bass;
+	var sectionName = \Drums;
 
-	var nextRackName = \SYNTHS, nextModuleName = \Bass, nextDeviceName = \bassFx, nextBusName = \busBassMain;
+	var nextRackName = \SYNTHS, nextModuleName = \Drums, nextDeviceName = \drumsFx, nextBusName = \busHhMain;
 
-	var instrumentName = \bassElectric;
-	var deviceName = \bassElectricDVC;
-	var mainSynthGroup = \Bass;
-	var rackOutlet = \busBassMain, rackInlet = \busElectricoInstance;
+	var instrumentName = \drumsHh;
+	var deviceName = \drumsHhDVC;
+	var mainSynthGroup = \Drums;
+	var rackOutlet = \busHhMain, rackInlet = \busHhInstance;
 
-	var outModule = \electricBass;
+	var outModule = \hhDrums;
 
 	// Liberar groups
 	if(~groups[rackName][sectionName][instrumentName][\instanciada] == false,
@@ -20,7 +20,6 @@ s.waitForBoot({
 
 			//Grupo para todas las secciones de instrumentos
 			~groups[rackName][sectionName][instrumentName].add(deviceName -> Group.head(~groups[nextRackName][sectionName][mainSynthGroup]))
-
 
 		}, {
 			//s.newBusAllocators;
@@ -63,13 +62,13 @@ s.waitForBoot({
 	~createDevice.value(outModule,
 		{|in, env|
 			var input;
-			input = CrossoverDistortion.ar(in, amp: 0.1, smooth: 0.8, mul: 0.04, add: 0);
-			input = input + BPF.ar(in,500,1)+ HPF.ar(in,700);
-			input = Compander.ar(input,0,0.4,0.6);
+			input = Compander.ar(in,0,0.7,1,1,0.1,0.4);
+			input = input + HPF.ar(in,1000,2);
+			input!2;
 
 		},
 		nil,
-		2,
+		1,
 		~dac[deviceName][\lets][rackInlet],
 		~dac[deviceName][\lets][rackOutlet]
 	);

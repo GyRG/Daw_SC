@@ -3,12 +3,12 @@ s.waitForBoot({
 	var rackName = \SYNTHS;
 	var sectionName = \Drums;
 
-	var nextRackName = \SYNTHS, nextModuleName = \Drums, nextDeviceName = \drumsFx, nextBusName = \busDrumsMain;
+	var nextRackName = \SYNTHS, nextModuleName = \Drums, nextDeviceName = \drumsFx, nextBusName = \busKickMain;
 
 	var instrumentName = \drumsKick;
 	var deviceName = \drumsKickDVC;
 	var mainSynthGroup = \Drums;
-	var rackOutlet = \busDrumsMain, rackInlet = \busKickInstance;
+	var rackOutlet = \busKickMain, rackInlet = \busKickInstance;
 
 	var outModule = \kickDrums;
 
@@ -63,15 +63,13 @@ s.waitForBoot({
 	~createDevice.value(outModule,
 		{|in, env|
 			var input;
-			var buff_num;
-			buff_num = Buffer.alloc(s, 1024, 1, { |buf| buf.chebyMsg([1,0,1,1,0,1])});
-			input =  HPF.ar(in,80,1.2)+LPF.ar(in,1200,0.8);
-			// input = Shaper.ar(buff_num,input,0.5);
-
-			input = Compander.ar(input,0.0,0.5);
+			input = Compander.ar(in,0,0.7,1,1,0.1,0.4);
+			input = input + HPF.ar(in,100,2);
+			input = CrossoverDistortion.ar(input, amp: 0.07, smooth: 0.99, mul: 1, add: 0);
+			input!2;
 		},
 		nil,
-		2,
+		1,
 		~dac[deviceName][\lets][rackInlet],
 		~dac[deviceName][\lets][rackOutlet]
 	);
@@ -97,4 +95,4 @@ s.waitForBoot({
 )
 );
 
-
+ 

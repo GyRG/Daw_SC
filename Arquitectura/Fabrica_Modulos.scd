@@ -22,10 +22,11 @@ s.waitForBoot({
 			outlets.postln;
 			inlets.postln;
 			"".postln;
+
 			outlets.size.do({|i|
 				XOut.ar(outlets[i], wet * env, sound*amp);
 			});
-		}, [0, 0, 0.1] ).add;
+		}, [0, 0, 0.4] ).add;
 	};
 s.sync;
 };
