@@ -56,6 +56,7 @@ s.waitForBoot({
 		]);
 	);
 
+	~lfo_rate = Bus.control(s,1);
 
 	//Definición de los nodulos del procesamiento final
 	// Mezcla Fx
@@ -63,7 +64,7 @@ s.waitForBoot({
 		{|in, env|
 			var input;
 			input = Compander.ar(in,0,0.7,1,1,0.1,0.4);
-			input = input + HPF.ar(in,1000,2);
+			input = input + PinkNoise.ar(SinOsc.kr(0.2+In.kr(~lfo_rate,1),0.4,0.6));
 			input!2;
 
 		},
@@ -72,7 +73,6 @@ s.waitForBoot({
 		~dac[deviceName][\lets][rackInlet],
 		~dac[deviceName][\lets][rackOutlet]
 	);
-
 
 	// Instanciación de los módulos
 	s.sync;//Le da tiempo al servidor para instanciar el synthDef en un synth

@@ -11,7 +11,6 @@ this.inspect;
 
 s.quit;
 
-
 s.plotTree;
 
 s.quit;

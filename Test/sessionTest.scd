@@ -13,6 +13,12 @@ SynthDef(\bombo,{
 	Out.ar(~dac[\drumsKickDVC][\lets][\busKickInstance],sig)
 }).add;
 
+SynthDef(\controlFx,{
+	var control;
+	control = SinOsc.kr(1,0,1);
+
+	Out.kr(~lfo_rate,control);
+}).play;
 
 
 ~bombos = Pdef(\pulso,

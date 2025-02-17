@@ -11,7 +11,7 @@ s.waitForBoot({
 
 			});
 			// in = In.ar(inlet, numChannels);
-			env = Linen.kr(gate, 2, 1, 2, 2);
+			env = Linen.kr(gate, 0.01, 1, 2, 2);
 			//Se llama a la función wrap para empaquetar las caracteristicas distintivas del efecto
 			// de la misma manera, se hace uso de in y env como prependArgs simplemente para no convertirlos
 			// en instancias de Control
