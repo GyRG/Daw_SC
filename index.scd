@@ -5,7 +5,7 @@ Require("Arquitectura/Arquitectura");
 
 
 s.queryAllNodes(queryControls:true);
-s.scope(60);
+s.scope(63);
 
 this.inspect;
 

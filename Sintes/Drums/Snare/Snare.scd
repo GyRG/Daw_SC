@@ -3,12 +3,12 @@ s.waitForBoot({
 	var rackName = \SYNTHS;
 	var sectionName = \Drums;
 
-	var nextRackName = \SYNTHS, nextModuleName = \Drums, nextDeviceName = \drumsFx, nextBusName = \busDrumsMain;
+	var nextRackName = \SYNTHS, nextModuleName = \Drums, nextDeviceName = \drumsFx, nextBusName = \busSnareMain;
 
 	var instrumentName = \drumsSnare;
 	var deviceName = \drumsSnareDVC;
 	var mainSynthGroup = \Drums;
-	var rackOutlet = \busDrumsMain, rackInlet = \busSnareInstance;
+	var rackOutlet = \busSnareMain, rackInlet = \busSnareInstance;
 
 	var outModule = \snareDrums;
 
@@ -69,6 +69,8 @@ s.waitForBoot({
 			// input = Shaper.ar(buff_num,input,0.5);
 
 			input = Compander.ar(input,0.0,0.5);
+			//input = input + BrownNoise.ar(SinOsc.kr(0.2+In.kr(~lfo_rate,1),0.1,0.6));
+			input!2;
 		},
 		nil,
 		2,

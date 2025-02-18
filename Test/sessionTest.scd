@@ -1,4 +1,11 @@
+
+
+TempoClock.default.tempo = 80/120;
+TempoClock.play;
+
+
 (
+
 
 SynthDef(\bombo,{
 	|out = 0, freq = 40, amp = 0.2|
@@ -13,12 +20,7 @@ SynthDef(\bombo,{
 	Out.ar(~dac[\drumsKickDVC][\lets][\busKickInstance],sig)
 }).add;
 
-SynthDef(\controlFx,{
-	var control;
-	control = SinOsc.kr(1,0,1);
 
-	Out.kr(~lfo_rate,control);
-}).play;
 
 
 ~bombos = Pdef(\pulso,
@@ -32,6 +34,18 @@ SynthDef(\controlFx,{
 ));
 
 )
+
+(
+	~lfo_control = SynthDef(\controlFx,{
+	var control;
+
+	control = SinOsc.kr(0.1,0,10);
+
+	Out.kr(~lfo_rate,control);
+		}).play;
+
+);
+
 
 (
 
@@ -55,7 +69,7 @@ SynthDef(\hihat,{
 		\amp, 1,
 		\freq, Pseq([50,100],inf),
 		\group, ~groups[\SYNTHS][\Drums][\drumsHh][\drumsHhDVC]
-));
+)).play;
 
 )
 ~hihat.play;
@@ -83,7 +97,6 @@ SynthDef(\pluggedInstrument,{
 )
 
 
-~clock = TempoClock(90.0/60.0).permanent_(true);
 
 ~bombos.play;
 ~bass.stop;

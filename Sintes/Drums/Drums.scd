@@ -8,9 +8,11 @@ s.waitForBoot({
 
 	var deviceName = \drumsFx;
 	var mainSynthGroup = \Drums;
-	var rackOutlet = \busDrums, rackInlet = [\busKickMain, \busHhMain];
+	var rackOutlet = \busDrums, rackInlet = [\busKickMain, \busHhMain, \busSnareMain];
 
 	var outModule = \seccionDrums;
+
+	~lfo_rate = Bus.control(s,1);
 
 	// Liberar groups
 	if(~groups[rackName][sectionName][\instanciada] == false,
@@ -93,7 +95,7 @@ s.waitForBoot({
 	);
 
 	s.sync;
-//	Require("./Snare/Snare.scd");
+	Require("./Snare/Snare.scd");
 	Require("./Hh/Hh.scd");
 	Require("./Kick/Kick.scd");
 //	Require("./Crash/Crash.scd");

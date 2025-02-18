@@ -56,7 +56,6 @@ s.waitForBoot({
 		]);
 	);
 
-	~lfo_rate = Bus.control(s,1);
 
 	//Definición de los nodulos del procesamiento final
 	// Mezcla Fx
@@ -64,7 +63,7 @@ s.waitForBoot({
 		{|in, env|
 			var input;
 			input = Compander.ar(in,0,0.7,1,1,0.1,0.4);
-			input = input + PinkNoise.ar(SinOsc.kr(0.2+In.kr(~lfo_rate,1),0.4,0.6));
+			//input = input + PinkNoise.ar(SinOsc.kr(0.2+In.kr(~lfo_rate,1),0,0.6));
 			input!2;
 
 		},
