@@ -4,11 +4,11 @@ s.waitForBoot({
 	var sectionName = \Drums;
 
 	var nextRackName = \SYNTHS, nextModuleName = \SynthsGroup, nextDeviceName = \SynthsDAC, nextBusName = \busDrumsSynth;
-	var inGroup = [\drumsKick,\drumsSnare,\drumsHh,\drumsRide,\drumsTom,\drumsCrash], outGroup = \Drums;
+	var inGroup = [\drumsKick,\drumsSnare,\drumsHh,\drumsRide,\drumsTomb,\drumsCrash], outGroup = \Drums;
 
 	var deviceName = \drumsFx;
 	var mainSynthGroup = \Drums;
-	var rackOutlet = \busDrums, rackInlet = [\busKickMain, \busHhMain, \busSnareMain];
+	var rackOutlet = \busDrums, rackInlet = [\busKickMain, \busHhMain, \busSnareMain, \busTombMain];
 
 	var outModule = \seccionDrums;
 
@@ -100,7 +100,7 @@ s.waitForBoot({
 	Require("./Kick/Kick.scd");
 //	Require("./Crash/Crash.scd");
 //	Require("./Ride/Ride.scd");
-//	Require("./Tom/Tom.scd");
+	Require("./Tomb/Tomb.scd");
 };
 )
 );

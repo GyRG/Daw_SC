@@ -64,16 +64,17 @@ s.waitForBoot({
 		{|in, env|
 			var input;
 			var buff_num;
-			buff_num = Buffer.alloc(s, 1024, 1, { |buf| buf.chebyMsg([1,0,1,1,0,1])});
-			input =  HPF.ar(in,80,1.2)+LPF.ar(in,1200,0.8);
+			//buff_num = Buffer.alloc(s, 1024, 1, { |buf| buf.chebyMsg([1,0,1,1,0,1])});
+			//input =  HPF.ar(in,80,1.2)+LPF.ar(in,1200,0.8);
 			// input = Shaper.ar(buff_num,input,0.5);
 
-			input = Compander.ar(input,0.0,0.5);
+			input = in;//Compander.ar(in,0.0,0.5);
 			//input = input + BrownNoise.ar(SinOsc.kr(0.2+In.kr(~lfo_rate,1),0.1,0.6));
+			input = input + DelayC.ar(in,1.2,1);
 			input!2;
 		},
 		nil,
-		2,
+		1,
 		~dac[deviceName][\lets][rackInlet],
 		~dac[deviceName][\lets][rackOutlet]
 	);

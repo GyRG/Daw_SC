@@ -65,10 +65,9 @@ s.waitForBoot({
 			var input,sig;
 			input = in;
 			sig = input;
-			sig.numChannels.postln;
 
-			sig = sig + LinPan2.ar(DelayN.ar(sig,5*120/80,LFNoise1.kr(0.0001,0.01,1),1),LFNoise2.kr(0.02,0.2,1));
-			sig = FreeVerb.ar(sig,0.4,0.9);
+			//sig = sig + LinPan2.ar(DelayN.ar(sig,120/80,LFNoise1.kr(0.0001,0.01,1),1),LFNoise2.kr(0.02,0.2,1));
+			sig = FreeVerb.ar(sig!2,0.4,0.9);
 			sig = sig/0.75;
 
 			//input = CrossoverDistortion.ar(in, amp: 0.9, smooth: 0.1, mul: 0.2, add: 0);
