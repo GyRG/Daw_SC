@@ -120,9 +120,8 @@ SynthDef(\pluggedInstrument,{
 	Out.ar(~dac[\externalMicroFreakDVC][\lets][\busMicroFreakInstance],sig)
 }).add;
 )
-(
 
-)
+
 
 (
 	~lfo_control = SynthDef(\controlFx,{

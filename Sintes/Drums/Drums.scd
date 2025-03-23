@@ -8,7 +8,7 @@ s.waitForBoot({
 
 	var deviceName = \drumsFx;
 	var mainSynthGroup = \Drums;
-	var rackOutlet = \busDrums, rackInlet = [\busKickMain, \busHhMain, \busSnareMain, \busTombMain];
+	var rackOutlet = \busDrums, rackInlet = [\busKickMain, \busHhMain, \busSnareMain, \busTombMain, \busRideMain, \busCrashMain];
 
 	var outModule = \seccionDrums;
 
@@ -98,8 +98,8 @@ s.waitForBoot({
 	Require("./Snare/Snare.scd");
 	Require("./Hh/Hh.scd");
 	Require("./Kick/Kick.scd");
-//	Require("./Crash/Crash.scd");
-//	Require("./Ride/Ride.scd");
+	Require("./Crash/Crash.scd");
+	Require("./Ride/Ride.scd");
 	Require("./Tomb/Tomb.scd");
 };
 )

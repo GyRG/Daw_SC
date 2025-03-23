@@ -3,12 +3,12 @@ s.waitForBoot({
 	var rackName = \SYNTHS;
 	var sectionName = \Drums;
 
-	var nextRackName = \SYNTHS, nextModuleName = \Drums, nextDeviceName = \drumsFx, nextBusName = \busDrumsMain;
+	var nextRackName = \SYNTHS, nextModuleName = \Drums, nextDeviceName = \drumsFx, nextBusName = \busRideMain;
 
 	var instrumentName = \drumsRide;
 	var deviceName = \drumsRideDVC;
 	var mainSynthGroup = \Drums;
-	var rackOutlet = \busDrumsMain, rackInlet = \busRideInstance;
+	var rackOutlet = \busRideMain, rackInlet = \busRideInstance;
 
 	var outModule = \rideDrums;
 
@@ -64,14 +64,15 @@ s.waitForBoot({
 		{|in, env|
 			var input;
 			var buff_num;
-			buff_num = Buffer.alloc(s, 1024, 1, { |buf| buf.chebyMsg([1,0,1,1,0,1])});
-			input =  HPF.ar(in,80,1.2)+LPF.ar(in,1200,0.8);
+			//buff_num = Buffer.alloc(s, 1024, 1, { |buf| buf.chebyMsg([1,0,1,1,0,1])});
+			//input =  HPF.ar(in,80,1.2)+LPF.ar(in,1200,0.8);
 			// input = Shaper.ar(buff_num,input,0.5);
+			input = in;
+			input!2;
 
-			input = Compander.ar(input,0.0,0.5);
 		},
 		nil,
-		2,
+		1,
 		~dac[deviceName][\lets][rackInlet],
 		~dac[deviceName][\lets][rackOutlet]
 	);
