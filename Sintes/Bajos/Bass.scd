@@ -26,7 +26,7 @@ s.waitForBoot({
 		
 
 			//Grupo para todas las secciones de instrumentos
-			~groups[rackName][sectionName].add(mainSynthGroup -> Group.head(~groups[nextRackName][nextModuleName]));
+			~groups[rackName][sectionName].add(mainSynthGroup -> ParGroup.head(~groups[nextRackName][nextModuleName]));
 
 
 		}, {

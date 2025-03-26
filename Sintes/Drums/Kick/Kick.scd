@@ -19,7 +19,7 @@ s.waitForBoot({
 			// se vuelve a ejecutar para evitar creación de nuevos buses
 
 			//Grupo para todas las secciones de instrumentos
-			~groups[rackName][sectionName][instrumentName].add(deviceName -> Group.head(~groups[nextRackName][sectionName][mainSynthGroup]))
+			~groups[rackName][sectionName][instrumentName].add(deviceName -> ParGroup.head(~groups[nextRackName][sectionName][mainSynthGroup]))
 
 
 		}, {
@@ -63,9 +63,10 @@ s.waitForBoot({
 	~createDevice.value(outModule,
 		{|in, env|
 			var input;
-			input = Compander.ar(in,0,0.7,1,1,0.1,0.4);
-			input = input + HPF.ar(in,100,2);
-			input = CrossoverDistortion.ar(input, amp: 0.07, smooth: 0.99, mul: 1, add: 0);
+			input = in;
+			input = CrossoverDistortion.ar(input, amp: 0.2, smooth: 1, mul: 1, add: 0);
+			input = Compander.ar(in,0,0.7,0.1,1,0.4,0.4);
+			input = BPF.ar(in,140,4,1)+BPF.ar(in,150,1)+LPF.ar(in,600,0.07);
 			input!2;
 		},
 		nil,

@@ -126,9 +126,9 @@ s.sync;
 	Pbind(
 		\instrument, \ride,
 		//\dur, Pwrand([Pseq([0.75],2),Pseq([0.125],3),Pseq([0.25],1)],[10,8,4].reciprocal,inf),
-		\dur, Pseq([2,2,1,3,1,2,3]/6,inf),
+		\dur, Pseq([2,2,3,2,2,3,2]/8,inf),
 		\amp, Pseq([0.5],inf),
-		\freq, Pbrown(69.midicps,72.midicps,4,inf),
+			\freq, Pgauss(69.midicps,0.2,inf),
 		\group, ~groups[\SYNTHS][\Drums][\drumsRide][\drumsRideDVC]
 ));
 
@@ -158,7 +158,7 @@ s.sync;
 ~bombos = Pdef(\pulso,
 	Pbind(
 		\instrument, \bombo,
-		\dur, Pseq([8],inf),
+		\dur, Pseq([4],inf),
 		\amp,Pseq([0.4],inf),
 		\freq, Pseq([8],inf),
 		\group, ~groups[\SYNTHS][\Drums][\drumsKick][\drumsKickDVC]
@@ -194,11 +194,5 @@ s.sync;
 	addAction: 'addToHead'
 );
 }
-
-
 )
-
 )
-
-
-

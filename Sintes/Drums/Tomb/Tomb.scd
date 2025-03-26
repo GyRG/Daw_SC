@@ -19,7 +19,7 @@ s.waitForBoot({
 			// se vuelve a ejecutar para evitar creación de nuevos buses
 
 			//Grupo para todas las secciones de instrumentos
-			~groups[rackName][sectionName][instrumentName].add(deviceName -> Group.head(~groups[nextRackName][sectionName][mainSynthGroup]))
+			~groups[rackName][sectionName][instrumentName].add(deviceName -> ParGroup.head(~groups[nextRackName][sectionName][mainSynthGroup]))
 
 		}, {
 			//s.newBusAllocators;
@@ -62,7 +62,9 @@ s.waitForBoot({
 	~createDevice.value(outModule,
 		{|in, env|
 			var input;
-			input = Compander.ar(in,0,0.7,1,1,0.1,0.4);
+
+			input = Compander.ar(in,0,0.48,0.1,1,0.1,0.02);
+			input = BPF.ar(in,300,10,0.7) + LPF.ar(in,400,0.2);
 			//input = input + PinkNoise.ar(SinOsc.kr(0.2+In.kr(~lfo_rate,1),0,0.6));
 			input!2;
 

@@ -19,7 +19,7 @@ s.waitForBoot({
 			// se vuelve a ejecutar para evitar creación de nuevos buses
 
 			//Grupo para todas las secciones de instrumentos
-			~groups[rackName][sectionName][instrumentName].add(deviceName -> Group.head(~groups[nextRackName][sectionName][mainSynthGroup]))
+			~groups[rackName][sectionName][instrumentName].add(deviceName -> ParGroup.head(~groups[nextRackName][sectionName][mainSynthGroup]))
 
 
 		}, {

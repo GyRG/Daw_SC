@@ -19,7 +19,7 @@ s.waitForBoot({
 			// se vuelve a ejecutar para evitar creación de nuevos buses
 
 			//Grupo para todas las secciones de instrumentos
-			~groups[rackName][sectionName][instrumentName].add(deviceName -> Group.head(~groups[nextRackName][sectionName][mainSynthGroup]))
+			~groups[rackName][sectionName][instrumentName].add(deviceName -> ParGroup.head(~groups[nextRackName][sectionName][mainSynthGroup]))
 
 
 		}, {
@@ -63,11 +63,8 @@ s.waitForBoot({
 	~createDevice.value(outModule,
 		{|in, env|
 			var input;
-			var buff_num;
-			//buff_num = Buffer.alloc(s, 1024, 1, { |buf| buf.chebyMsg([1,0,1,1,0,1])});
-			//input =  HPF.ar(in,80,1.2)+LPF.ar(in,1200,0.8);
-			// input = Shaper.ar(buff_num,input,0.5);
-			input = in;
+			input = FreeVerb.ar(in,0.9,0.2,0.01) +in;
+			input =  HPF.ar(in,2600,0.2)+BPF.ar(in,500,0.1,0.1) + input;
 			input!2;
 
 		},
