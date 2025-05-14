@@ -75,10 +75,10 @@ SynthDef(\hihat,{
 ~hihat.play;
 
 (
-SynthDef(\pluggedInstrument,{
+SynthDef(\pluggedInstrumentXLR,{
 	|out = 0, freq = 50, amp = 0.7, sustain=0.1|
 	var sig, env, enf;
-	sig = In.ar(3,1);
+	sig = In.ar(2,1);
 
 
 	//sig = LinPan2.ar(sig,SinOsc.kr(0.6,0,1));
@@ -87,15 +87,35 @@ SynthDef(\pluggedInstrument,{
 
 )
 
+(
+	SynthDef(\pluggedInstrumentTRS,{
+		|out = 0, freq = 50, amp = 0.7, sustain=0.1|
+		var sig, env, enf;
+		sig = In.ar(3,1);
+
+
+		//sig = LinPan2.ar(sig,SinOsc.kr(0.6,0,1));
+		Out.ar(~dac[\externalGuitarDVC][\lets][\busGuitarInstance],sig)
+	}).add;
+
+)
+
+
 ~freak.free;
 
 (
-~freak = Synth(\pluggedInstrument,
+~freak = Synth(\pluggedInstrumentXLR,
 	target: ~groups[\SYNTHS][\External][\externalMicroFreak][\externalMicroFreakDVC],
 	addAction: 'addToHead'
 );
 )
 
+(
+~guitar = Synth(\pluggedInstrumentTRS,
+		target: ~groups[\SYNTHS][\External][\externalGuitar][\externalGuitarDVC],
+		addAction: 'addToHead'
+	);
+)
 
 
 ~bombos.play;

@@ -1,12 +1,13 @@
 (
+s.waitForBoot({
 
     SynthDef(\bombo,{
         |out = 0, freq = 40, amp = 0.2|
         var sig, env, enf;
-        env = EnvGen.kr(Env([0,1,0.8,0],[0.01,0.9,0.4],[-2,-3]),doneAction:2);
-        enf = EnvGen.kr(Env([freq*256,freq*1.5,freq],[0.01,0.02],[-70,-20]));
+        env = EnvGen.kr(Env([0,1,0.4,0],[0.007,0.4,0.2],[-2,-3]),doneAction:2);
+        enf = EnvGen.ar(Env([freq*1024,freq,freq/2],[0.3,0.5],[-77,-21]));
         sig = SinOsc.ar(freq*enf);
-        sig = sig + LFTri.ar(freq,SinOsc.ar((freq),0,pi),0.2,0);
+        sig = sig + LFTri.ar(freq,SinOsc.ar((freq),0,pi),0.7,0);
         sig  = sig * env *amp;
         Out.ar(~dac[\drumsKickDVC][\lets][\busKickInstance],sig)
     }).add;
@@ -25,24 +26,27 @@
     SynthDef(\ride,{
         |out = 0, freq = 400, amp = 0.2, dur=0.1|
         var sig, env, enf;
-        env = EnvGen.kr(Env([0,0.4,0.1,0],[0.003,0.1,dur*2],[-2,-3]),doneAction:2);
-        enf = EnvGen.kr(Env([1500,7000],[0.1],[-1]));
-        sig = Saw.ar(freq*4,amp)+Saw.ar(freq*7,amp);
-            sig = sig + WhiteNoise.ar(amp*LFNoise2.ar(12000),0.1)*env;
+        env = EnvGen.kr(Env([0,0.4,0.1,0],[0.001,0.1,dur*4],[-2,-3]),doneAction:2);
+		enf = EnvGen.kr(Env([1800,3000],[Rand(0.01,5)],[-2]));
+		sig = Saw.ar(freq*4,amp)+LFSaw.ar(freq*7,SinOsc.ar(0.1,0,pi,pi),amp);
+		sig = sig + WhiteNoise.ar(amp*LFNoise2.ar(Rand(10000,15000)),0.1)*env;
         sig = HPF.ar(sig,enf);
-        Out.ar(~dac[\drumsCrashDVC][\lets][\busCrashInstance],sig*amp)
+        Out.ar(~dac[\drumsRideDVC][\lets][\busRideInstance],sig*amp)
     }).add;
 
     SynthDef(\crash,{
-        |out = 0, freq = 400, amp = 0.2, dur=0.1|
-        var sig, env, enf;
-        env = EnvGen.kr(Env([0,0.8,0.2,0],[0.001,0.05,amp],[-4,-3]),doneAction:2);
-        enf = EnvGen.kr(Env([10000,20],[0.004],[-50]));
+        |out = 0, freq = 400, amp = 0.2, dur=1|
+        var sig, env, envAtk, envDec, envSus;
+        env = EnvGen.kr(Env([0,0.8,0.6,0],[0.1,0.8],[0,0]),timeScale:dur,doneAction:2);
 
-            sig = Pulse.ar(freq*7,SinOsc.ar(freq*4,pi,0.2),amp*0.5)-Pulse.ar(freq*4,SinOsc.ar(freq*7,0,0.1),amp*0.5);
+		envAtk = EnvGen.kr(Env([0,0.7,0],[0.001,0.2],[-10,-2]),doneAction:0);
+		envDec = EnvGen.kr(Env([0,0.7,0],[0.02,0.2],[-10,-2]),doneAction:0);
+		envSus = EnvGen.kr(Env([0,0.7,0],[0.01,5],[-1,-6]),doneAction:0);
 
-        sig = sig + WhiteNoise.ar(amp*Saw.ar(XLine.kr(200,8000,0.04)))*env;
-        sig = HPF.ar(sig,enf);
+		sig = WhiteNoise.ar(SinOsc.ar(freq*4,0,envAtk));
+		sig = sig + WhiteNoise.ar(SinOsc.ar(freq*16,0,envDec)) + SinGrain.ar(Dust.kr(800),0.7,freq*8,envDec*env);
+		sig = sig + PinkNoise.ar(SinOscFB.ar(LFNoise2.ar(100,freq*4,freq*2),Saw.kr(100,0.2,0.8),envSus,0)) + SinGrain.ar(Dust.kr(700),0.04,freq*4,envSus*env);
+		sig = BPF.ar(sig,1800) + BPF.ar(sig,4800) + BPF.ar(sig,6000) - LPF.ar(sig,800);
         Out.ar(~dac[\drumsCrashDVC][\lets][\busCrashInstance],sig*amp)
     }).add;
 
@@ -64,12 +68,13 @@
         |out = 0, freq = 400, amp = 1,dur=0.1|
         var sig, env, envFilter, envNoise, envFreq;
 
-        env = EnvGen.kr(Env([0,0.007,0.9,0],[0.001,dur],[-1,-2]),doneAction:2);
-        envNoise = EnvGen.kr(Env([0.4,0],[0.05],[-5]));
-        envFreq = EnvGen.kr(Env([freq*4,freq*0.25,freq*0.0625],[0.021,0.4],[-10,-4]));
-        envFilter = EnvGen.kr(Env([freq*5,freq*0.125],[0.01],[-10]));
-        sig = PinkNoise.ar(envNoise)+LFTri.ar(envFreq);
-        sig = HPF.ar(sig,envFilter);
+        env = EnvGen.kr(Env([0,0.8,0.1,0],[0.01,0.4,dur+4],[-40,0,2]),timeScale:dur,doneAction:2);
+        envNoise = EnvGen.kr(Env([0.8,0.01],[0.3],[-5]));
+        envFreq = EnvGen.ar(Env([freq*128,freq*0.75,freq*0.1],[0.01,0.08],[-10,-40]));
+        envFilter = EnvGen.ar(Env([freq*2,10],[0.6],[-1]));
+		sig = PinkNoise.ar(envNoise*0.4) + BrownNoise.ar(envNoise*0.5);
+		sig = sig + SinOsc.ar(envFreq);
+        sig = LPF.ar(sig,envFilter);
         Out.ar(~dac[\drumsTombDVC][\lets][\busTombInstance],sig*amp)
     }).add;
 
@@ -78,30 +83,44 @@
         var sig, env, enf;
         env = EnvGen.kr(Env([0,1,0.7,0],[0.37,5,12],[0,1]),doneAction:2);
         sig = LFTri.ar(freq*0.5,0,0.4);
-        6.do({
-            sig = sig + PanX.ar( 2,LFSaw.ar(freq+Rand(-1,1),0,0.08),SinOsc.kr(LFNoise1.kr(0.02,9,5),0,1,0),LFNoise1.kr(0.1,pi,pi*0.5)) ;
+        20.do({
+            sig = sig + PanX.ar(2,LFSaw.ar(freq+Rand(-5,5),0,0.08),SinOsc.kr(LFNoise1.kr(0.02,9,5),0,1,0),LFNoise1.kr(0.01,pi,pi*0.5),1.2) ;
         });
         sig  = sig * env *amp;
         Out.ar(~dac[\padsPinkDVC][\lets][\busPinkInstance],sig)
     }).add;
 
-    SynthDef(\pluggedInstrument,{
-        |out = 0, freq = 50, amp = 0.7, sustain=0.1|
+	SynthDef(\electricBass,{
+        |out = 0, freq = 50, amp = 0.4, dur = 0.1, legato = 4|
         var sig, env, enf;
-        sig = In.ar(3,1);
+        env = EnvGen.kr(Env([0,1,0.7,0.1,0],[0.02,4,1,0.01],[-1,-1,0]),doneAction:2);
+		enf = EnvGen.kr(Env([6,12],[0.002],[2]),doneAction:0);
 
+		sig = LFTri.ar(freq,LFTri.ar(0.2,Rand(-pi,pi),pi),0.6);
+		(1..30).do({|n,i|
+			var panWidth = 0.7;
 
-        //sig = LinPan2.ar(sig,SinOsc.kr(0.6,0,1));
-        Out.ar(~dac[\externalMicroFreakDVC][\lets][\busMicroFreakInstance],sig)
+			if( n%2==0,{
+				sig = sig + LinPan2.ar(LFTri.ar(freq*n/0.666,0,0.2/n,0),1+panWidth/n);
+			},{
+				sig = sig + LinPan2.ar(LFTri.ar(freq*n/0.666,0,0.2/n,0),1-panWidth/n);
+
+			});
+        });
+
+		sig = LPF.ar(sig, freq * enf) + sig * 0.5;
+        sig  = sig * env *amp;
+        Out.ar(~dac[\bassElectricDVC][\lets][\busElectricoInstance],sig)
     }).add;
+
 
     s.sync;
 
     ~snr= Pdef(\snareBeat,
         Pbind(
             \instrument, \snare,
-            \dur, Pseq([4],inf),
-            \amp, Pseq(0!4+[1.2]+0!3,inf),
+            \dur, Pseq([4]/5,inf),
+			\amp, Pseq((0.8!1) ++ (0.6!4),inf),
             \freq, Pseq([16],inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsSnare][\drumsSnareDVC]
     ));
@@ -112,8 +131,8 @@
         Pbind(
             \instrument, \hihat,
             //\dur, Pwrand([Pseq([0.75],2),Pseq([0.125],3),Pseq([0.25],1)],[10,8,4].reciprocal,inf),
-            \dur, Pseq(1!1,inf),
-            \amp, Pseq(4!1+[0.4],inf),
+            \dur, Pseq(1/4!1,inf),
+			\amp, Pseq((4!1)++(2!4),inf),
             \freq, Pseq([50,10],inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsHh][\drumsHhDVC]
     ));
@@ -122,10 +141,14 @@
     ~ride = Pdef(\rideBeat,
         Pbind(
             \instrument, \ride,
-            //\dur, Pwrand([Pseq([0.75],2),Pseq([0.125],3),Pseq([0.25],1)],[10,8,4].reciprocal,inf),
-            \dur, Pseq([2,2,1,3,1,2,3]/6,inf),
-            \amp, Pseq([0.5],inf),
-            \freq, Pbrown(69.midicps,72.midicps,4,inf),
+
+			\dur, Pseq([
+				Pseq([0.5,0.5,0.25],4),
+				Pseq(0.5!1,3)
+			]/2,inf),
+
+            \amp, Pseq([0.7]*0.5,inf),
+			\freq, Pgauss(Pwrand([68,69,65].midicps,[80,0,0].normalizeSum ,inf),2,inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsRide][\drumsRideDVC]
     ));
 
@@ -133,8 +156,8 @@
         Pbind(
             \instrument, \crash,
             //\dur, Pwrand([Pseq([0.75],2),Pseq([0.125],3),Pseq([0.25],1)],[10,8,4].reciprocal,inf),
-            \dur, Pseq([7,4,3,3,4,7],inf),
-            \amp, Pseq([0.7],inf),
+            \dur, Pseq([6],inf),
+            \amp, Pseq([0.3],inf),
                 \freq, Pseq([70],inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsCrash][\drumsCrashDVC]
     ));
@@ -144,9 +167,9 @@
         Pbind(
             \instrument, \tomb,
             //\dur, Pwrand([Pseq([0.75],2),Pseq([0.125],3),Pseq([0.25],1)],[10,8,4].reciprocal,inf),
-            \dur, Pseq(0.2!1,inf),
-            \amp, Pseq(0.3!2+[0.1],inf),
-            \freq, Pseq([400,200,600,300,150],inf),
+            \dur, Pseq(1/4!1,inf),
+			\amp, Pseq((0.6!1) ++ (0.2!2) ++ (0.6!1) ++ (0.1!1),inf),
+			\freq, Pseq([420],inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsTomb][\drumsTombDVC]
     ));
 
@@ -155,26 +178,56 @@
     ~bombos = Pdef(\pulso,
         Pbind(
             \instrument, \bombo,
-            \dur, Pseq([8],inf),
-            \amp,Pseq([0.4],inf),
-            \freq, Pseq([8],inf),
+            \dur, Pseq([4],inf),
+            \amp,Pseq([0.3],inf),
+            \freq, Pseq([7],inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsKick][\drumsKickDVC]
     ));
 
     ~pads = Pdef(\chords,
         Pbind(
+
             \instrument, \pads,
-            \dur, Pseq([3,4]*3, inf),
-            \amp,Pseq([0.5,0.7,0.6]*0.5,inf),
+            \dur, Pseq([4], inf),
+            \amp,Pseq([0.5,0.7]*0,inf),
             \freq, Ptuple(
                 [
-                    Pseq([63,62].midicps, inf),
-                    Pseq([70,70].midicps, inf),
-                    Pseq([72,72].midicps, inf),
-                    Pseq([77,79].midicps, inf)
-            ], inf),
+					Pseq(
+						[
+							Pseq([60,62].midicps,1),
+							Pseq([56,55].midicps,1)
+					],inf),
+					Pseq(
+						[
+							Pseq([70,70].midicps,1),
+							Pseq([70,68].midicps,1)
+					],inf),
+					Pseq(
+						[
+							Pseq([72,74].midicps,1),
+							Pseq([72,75].midicps,1)
+					],inf),
+					Pseq(
+						[
+							Pseq([77,79].midicps,1),
+							Pseq([79,77].midicps,1)
+					],inf)
+				],
+				inf),
             \group, ~groups[\SYNTHS][\Pads][\padsPink][\padsPinkDVC]
     ));
-)
 
+	~bassLine = Pdef(\bassLine,
+        Pbind(
+
+            \instrument, \electricBass,
+            \dur, Pseq([1.5,4,4.5], inf),
+            \amp,Pseq([0.5,0.7,0.2,0.4,0.6]*1.2,inf),
+			\freq, Pseq(2*[48,44,41].midicps,inf),
+            \group, ~groups[\SYNTHS][\Bass][\bassElectric][\bassElectricDVC]
+    ));
+
+
+});
+    )
     

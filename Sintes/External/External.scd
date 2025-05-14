@@ -4,11 +4,11 @@ s.waitForBoot({
 	var sectionName = \External;
 
 	var nextRackName = \SYNTHS, nextModuleName = \SynthsGroup, nextDeviceName = \SynthsDAC, nextBusName = \busExternoSynth;
-	var inGroup = [\externalMicroFreak], outGroup = \External;
+	var inGroup = [\externalMicroFreak,\externalGuitar], outGroup = \External;
 
 	var deviceName = \externalFx;
 	var mainSynthGroup = \External;
-	var rackOutlet = \busExterno, rackInlet = [\busExternalMain];
+	var rackOutlet = \busExterno, rackInlet = [\busMicroFreakMain,\busGuitarMain];
 
 	var outModule = \seccionExterno;
 
@@ -23,7 +23,7 @@ s.waitForBoot({
 				~groups[rackName][sectionName][instrumentName].add(\instanciada -> false);
 
 			});
-		
+
 
 			//Grupo para todas las secciones de instrumentos
 			~groups[rackName][sectionName].add(mainSynthGroup -> ParGroup.head(~groups[nextRackName][nextModuleName]));
@@ -94,6 +94,7 @@ s.waitForBoot({
 
 	s.sync;
 	Require("./MicroFreak/MicroFreak.scd");
+	Require("./Guitar/Guitar.scd");
 };
 )
 );

@@ -1,16 +1,16 @@
-(//Salida de efectos de Secciòn de bajos
+(//Salida de efectos de Secciòn de external
 s.waitForBoot({
 	var rackName = \SYNTHS;
-	var sectionName = \Bass;
+	var sectionName = \External;
 
-	var nextRackName = \SYNTHS, nextModuleName = \Bass, nextDeviceName = \bassFx, nextBusName = \busBassMain;
+	var nextRackName = \SYNTHS, nextModuleName = \External, nextDeviceName = \externalFx, nextBusName = \busGuitarMain;
 
-	var instrumentName = \bassElectric;
-	var deviceName = \bassElectricDVC;
-	var mainSynthGroup = \Bass;
-	var rackOutlet = \busBassMain, rackInlet = \busElectricoInstance;
+	var instrumentName = \externalGuitar;
+	var deviceName = \externalGuitarDVC;
+	var mainSynthGroup = \External;
+	var rackOutlet = \busExternalMain, rackInlet = \busGuitarInstance;
 
-	var outModule = \electricBass;
+	var outModule = \guitarExternal;
 
 	// Liberar groups
 	if(~groups[rackName][sectionName][instrumentName][\instanciada] == false,
@@ -62,14 +62,21 @@ s.waitForBoot({
 	// Mezcla Fx
 	~createDevice.value(outModule,
 		{|in, env|
-			var input;
-			//input = CrossoverDistortion.ar(in, amp: 0.5, smooth: 1.2, mul: 0.01, add: 0);
-			input = BPF.ar(in,500,1)+ HPF.ar(in,400) ;
-			input = Compander.ar(input,0,0.4,0.6);
+			var input,sig;
+			input = in;
+			sig = input;
+
+			//sig = sig + LinPan2.ar(DelayN.ar(sig,120/80,LFNoise1.kr(0.0001,0.01,1),1),LFNoise2.kr(0.02,0.2,1));
+			sig = Pan2.ar(FreeVerb.ar(sig,0.4,0.9),SinOsc.kr(1000)) + Pan2.ar(FreeVerb.ar(sig,0.4,0.9),SinOsc.kr(1000,pi));
+			sig = sig/2;
+
+			//input = CrossoverDistortion.ar(in, amp: 0.9, smooth: 0.1, mul: 0.2, add: 0);
+			//input = input + BPF.ar(in,100,1)+ HPF.ar(in,1500);
+			//input = Compander.ar(input,0,0.4,0.6);
 
 		},
 		nil,
-		2,
+		1,
 		~dac[deviceName][\lets][rackInlet],
 		~dac[deviceName][\lets][rackOutlet]
 	);

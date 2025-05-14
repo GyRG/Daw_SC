@@ -3,7 +3,7 @@ s.waitForBoot({
 	var rackName = \SYNTHS;
 	var sectionName = \External;
 
-	var nextRackName = \SYNTHS, nextModuleName = \External, nextDeviceName = \externalFx, nextBusName = \busExternalMain;
+	var nextRackName = \SYNTHS, nextModuleName = \External, nextDeviceName = \externalFx, nextBusName = \busMicroFreakMain;
 
 	var instrumentName = \externalMicroFreak;
 	var deviceName = \externalMicroFreakDVC;
