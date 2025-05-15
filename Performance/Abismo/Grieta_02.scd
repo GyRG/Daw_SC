@@ -90,14 +90,61 @@ s.waitForBoot({
         Out.ar(~dac[\padsPinkDVC][\lets][\busPinkInstance],sig)
     }).add;
 
+	SynthDef(\electricBass,{
+        |out = 0, freq = 50, amp = 0.4, dur = 2, legato = 4|
+        var sig, env, envLpf;
+		env = EnvGen.kr(Env([0,1,0.7,0.3,0],[Rand(0.005,0.04),dur,legato,0.01],[-1,2,0]),doneAction:2);
+		envLpf = EnvGen.kr(Env([1024,2048,128],[1,4],[0,-5]),doneAction:0);
+
+		sig = LFTri.ar(0.5*freq,LFTri.ar(0.4,Rand(-pi,pi),pi),0.6);
+		(1..15).do({|n,i|
+			var panWidth = 0.7;
+
+			if( n%2==0,{
+				sig = sig + LinPan2.ar(LFSaw.ar(freq*n, 0, 0.1/n,0),1+panWidth/n);
+			},{
+				sig = sig + LinPan2.ar(LFSaw.ar(freq*n, LFNoise0.kr(0.7,2pi,pi), 0.1/n,0),1-panWidth/n);
+
+			});
+        });
+
+		sig = LPF1.ar(sig, envLpf);
+		sig = BPF.ar(sig,128,0.1,0.2)+BPF.ar(sig,256,0.2,0.7) + BPF.ar(sig,512,0.4,0.3) +BPF.ar(sig,1024,0.7,0.6);
+        sig  = sig * env *amp;
+        Out.ar(~dac[\bassElectricDVC][\lets][\busElectricInstance],sig)
+    }).add;
+
+	SynthDef(\fmBass,{
+        |out = 0, freq = 50, amp = 0.4, dur = 2, legato = 4|
+        var car_0, mod_0, car_1, mod_1, car_2, mod_2, env, sig;
+		env = EnvGen.kr(Env.adsr(0.01,0.3,0.5,1.5,1,-5),\gate.kr(1),doneAction:2);
+		//env = EnvGen.kr(Env([0,1,0.7,0.3,0],[0.02,2,1,0.01],[-1,2,0]),doneAction:2);
+
+
+		mod_0 = Saw.ar(9*freq,1,0);
+		car_0 = LFTri.ar(mod_0);
+
+		mod_1 = Saw.ar(7*freq+car_0,1,0);
+		car_1 = LFTri.ar(mod_1);
+
+
+		mod_2 = Saw.ar(freq+car_1,1,0);
+		car_2 = SinOsc.ar(freq*mod_2);
+
+		sig = car_2;
+
+        sig  = sig * env *amp;
+        Out.ar(~dac[\bassBassFmDVC][\lets][\busBassFmInstance],sig!2)
+    }).add;
+
 
     s.sync;
 
     ~snr= Pdef(\snareBeat,
         Pbind(
             \instrument, \snare,
-            \dur, Pseq([4,3,3,4],inf),
-            \amp, Pseq(0.1!4+[1.1]+0.2!3,inf),
+            \dur, Pseq([4]/5,inf),
+			\amp, Pseq((0.8!1) ++ (0.6!4),inf),
             \freq, Pseq([16],inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsSnare][\drumsSnareDVC]
     ));
@@ -118,10 +165,14 @@ s.waitForBoot({
     ~ride = Pdef(\rideBeat,
         Pbind(
             \instrument, \ride,
-            //\dur, Pwrand([Pseq([0.75],2),Pseq([0.125],3),Pseq([0.25],1)],[10,8,4].reciprocal,inf),
-            \dur, Pseq([1,1.5,1,0.5,1,1.5]/2,inf),
-            \amp, Pseq([0.7]*0.7,inf),
-			\freq, Pgauss(Pwrand([69,66,70].midicps,[80,5,15].normalizeSum ,inf),2,inf),
+
+			\dur, Pseq([
+				Pseq([0.5,0.5,0.25],4),
+				Pseq(0.5!1,3)
+			]/2,inf),
+
+            \amp, Pseq([0.7]*0.5,inf),
+			\freq, Pgauss(Pwrand([68,69,65].midicps,[80,0,0].normalizeSum ,inf),2,inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsRide][\drumsRideDVC]
     ));
 
@@ -129,7 +180,7 @@ s.waitForBoot({
         Pbind(
             \instrument, \crash,
             //\dur, Pwrand([Pseq([0.75],2),Pseq([0.125],3),Pseq([0.25],1)],[10,8,4].reciprocal,inf),
-            \dur, Pseq([5],inf),
+            \dur, Pseq([6],inf),
             \amp, Pseq([0.3],inf),
                 \freq, Pseq([70],inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsCrash][\drumsCrashDVC]
@@ -140,8 +191,8 @@ s.waitForBoot({
         Pbind(
             \instrument, \tomb,
             //\dur, Pwrand([Pseq([0.75],2),Pseq([0.125],3),Pseq([0.25],1)],[10,8,4].reciprocal,inf),
-            \dur, Pseq(1/3!1,inf),
-			\amp, Pseq((0.4!1) ++ (0.2!2) ++ (0.6!1) ++ (0.1!1),inf),
+            \dur, Pseq(1/4!1,inf),
+			\amp, Pseq((0.6!1) ++ (0.2!2) ++ (0.6!1) ++ (0.1!1),inf),
 			\freq, Pseq([420],inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsTomb][\drumsTombDVC]
     ));
@@ -151,44 +202,25 @@ s.waitForBoot({
     ~bombos = Pdef(\pulso,
         Pbind(
             \instrument, \bombo,
-            \dur, Pseq([3,4],inf),
+            \dur, Pseq([4],inf),
             \amp,Pseq([0.3],inf),
             \freq, Pseq([7],inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsKick][\drumsKickDVC]
     ));
 
-    ~pads = Pdef(\chords,
+
+
+	~bassLine = Pdef(\bassLine,
         Pbind(
 
-            \instrument, \pads,
-            \dur, Pseq([3,4]*3, inf),
-            \amp,Pseq([0.5,0.7]*0.5,inf),
-            \freq, Ptuple(
-                [
-					Pseq(
-						[
-							Pseq([60,62].midicps,1),
-							Pseq([56,55].midicps,1)
-					],inf),
-					Pseq(
-						[
-							Pseq([70,70].midicps,1),
-							Pseq([70,68].midicps,1)
-					],inf),
-					Pseq(
-						[
-							Pseq([72,74].midicps,1),
-							Pseq([72,75].midicps,1)
-					],inf),
-					Pseq(
-						[
-							Pseq([77,79].midicps,1),
-							Pseq([79,77].midicps,1)
-					],inf)
-				],
-				inf),
-            \group, ~groups[\SYNTHS][\Pads][\padsPink][\padsPinkDVC]
+            \instrument, \fmBass,
+            \dur, Pseq([1.5,4,4.5], inf),
+			\legato, 0.5,
+            \amp,Pseq([0.5,0.7,0.2,0.4,0.6],inf),
+			\freq, Pseq([48,44,41,46].midicps,inf),
+            \group, ~groups[\SYNTHS][\Bass][\bassBassFm][\bassBassFmDVC]
     ));
+
 
 });
     )

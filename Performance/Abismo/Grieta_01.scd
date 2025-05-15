@@ -91,26 +91,27 @@ s.waitForBoot({
     }).add;
 
 	SynthDef(\electricBass,{
-        |out = 0, freq = 50, amp = 0.4, dur = 0.1, legato = 4|
-        var sig, env, enf;
-        env = EnvGen.kr(Env([0,1,0.7,0.1,0],[0.02,4,1,0.01],[-1,-1,0]),doneAction:2);
-		enf = EnvGen.kr(Env([6,12],[0.002],[2]),doneAction:0);
+        |out = 0, freq = 50, amp = 0.4, dur = 2, legato = 4|
+        var sig, env, envLpf;
+		env = EnvGen.kr(Env([0,1,0.7,0.3,0],[Rand(0.005,0.04),dur,legato,0.01],[-1,2,0]),doneAction:2);
+		envLpf = EnvGen.kr(Env([1024,2048,128],[1,4],[0,-5]),doneAction:0);
 
-		sig = LFTri.ar(freq,LFTri.ar(0.2,Rand(-pi,pi),pi),0.6);
-		(1..30).do({|n,i|
+		sig = LFTri.ar(0.5*freq,LFTri.ar(0.4,Rand(-pi,pi),pi),0.6);
+		(1..15).do({|n,i|
 			var panWidth = 0.7;
 
 			if( n%2==0,{
-				sig = sig + LinPan2.ar(LFTri.ar(freq*n/0.666,0,0.2/n,0),1+panWidth/n);
+				sig = sig + LinPan2.ar(LFSaw.ar(freq*n, 0, 0.1/n,0),1+panWidth/n);
 			},{
-				sig = sig + LinPan2.ar(LFTri.ar(freq*n/0.666,0,0.2/n,0),1-panWidth/n);
+				sig = sig + LinPan2.ar(LFSaw.ar(freq*n, LFNoise0.kr(0.7,2pi,pi), 0.1/n,0),1-panWidth/n);
 
 			});
         });
 
-		sig = LPF.ar(sig, freq * enf) + sig * 0.5;
+		sig = LPF1.ar(sig, envLpf);
+		sig = BPF.ar(sig,128,0.1,0.2)+BPF.ar(sig,256,0.2,0.7) + BPF.ar(sig,512,0.4,0.3) +BPF.ar(sig,1024,0.7,0.6);
         sig  = sig * env *amp;
-        Out.ar(~dac[\bassElectricDVC][\lets][\busElectricoInstance],sig)
+        Out.ar(~dac[\bassElectricDVC][\lets][\busElectricInstance],sig)
     }).add;
 
 
@@ -222,8 +223,8 @@ s.waitForBoot({
 
             \instrument, \electricBass,
             \dur, Pseq([1.5,4,4.5], inf),
-            \amp,Pseq([0.5,0.7,0.2,0.4,0.6]*1.2,inf),
-			\freq, Pseq(2*[48,44,41].midicps,inf),
+            \amp,Pseq([0.5,0.7,0.2,0.4,0.6]*3,inf),
+			\freq, Pseq([48,44,41,46].midicps,inf),
             \group, ~groups[\SYNTHS][\Bass][\bassElectric][\bassElectricDVC]
     ));
 

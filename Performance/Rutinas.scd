@@ -11,11 +11,9 @@
 	~ride.play(~clock_1);
 	64.yield;
 	~crash.play(~clock_1);
-
 	~tomb.play(~clock_1);
 	~snr.play(~clock_1);
 	~bombos.play(~clock_1);
-	//~crash.stop(~clock_1);
 	64.yield;
 	~crash.stop;
 	~pads.stop;
@@ -24,13 +22,12 @@
 	~snr.stop;
 	~bombos.stop;
 	~ride.stop;
-	8.yield;
 	Require("Abismo/Grieta_01.scd");
+	8.yield;
 	~bassLine.play(~clock_1);
-	~pads.play(~clock_1);
 	~hihat.play(~clock_1);
 	~ride.play(~clock_1);
-	16.yield;
+	64.yield;
 	~tomb.play(~clock_1);
 	~snr.play(~clock_1);
 	~bombos.play(~clock_1);
@@ -44,6 +41,9 @@
 	~bombos.stop;
 	~ride.stop;
 	~bassLine.stop;
+	Require("Abismo/Grieta_02.scd");
+	24.yield;
+	~bassLine.play(~clock);
 
 });
 

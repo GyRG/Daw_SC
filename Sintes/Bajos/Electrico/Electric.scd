@@ -3,12 +3,12 @@ s.waitForBoot({
 	var rackName = \SYNTHS;
 	var sectionName = \Bass;
 
-	var nextRackName = \SYNTHS, nextModuleName = \Bass, nextDeviceName = \bassFx, nextBusName = \busBassMain;
+	var nextRackName = \SYNTHS, nextModuleName = \Bass, nextDeviceName = \bassFx, nextBusName = \busElectricMain;
 
 	var instrumentName = \bassElectric;
 	var deviceName = \bassElectricDVC;
 	var mainSynthGroup = \Bass;
-	var rackOutlet = \busBassMain, rackInlet = \busElectricoInstance;
+	var rackOutlet = \busBassMain, rackInlet = \busElectricInstance;
 
 	var outModule = \electricBass;
 
@@ -64,7 +64,7 @@ s.waitForBoot({
 		{|in, env|
 			var input;
 			//input = CrossoverDistortion.ar(in, amp: 0.5, smooth: 1.2, mul: 0.01, add: 0);
-			input = BPF.ar(in,500,1)+ HPF.ar(in,400) ;
+			input = HPF.ar(in,400,2) + in;
 			input = Compander.ar(input,0,0.4,0.6);
 
 		},

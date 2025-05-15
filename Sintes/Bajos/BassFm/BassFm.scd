@@ -3,49 +3,45 @@ s.waitForBoot({
 	var rackName = \SYNTHS;
 	var sectionName = \Bass;
 
-	var nextRackName = \SYNTHS, nextModuleName = \SynthsGroup, nextDeviceName = \SynthsDAC, nextBusName = \busBajosSynth;
-	var inGroup = [\bassElectric, \bassBassFm,\Drone,\Sub], outGroup = \Bass;
+	var nextRackName = \SYNTHS, nextModuleName = \Bass, nextDeviceName = \bassFx, nextBusName = \busBassFmMain;
 
-	var deviceName = \bassFx;
+	var instrumentName = \bassBassFm;
+	var deviceName = \bassBassFmDVC;
 	var mainSynthGroup = \Bass;
-	var rackOutlet = \busBajos, rackInlet = [\busElectricMain,\busBassFmMain];
+	var rackOutlet = \busBassMain, rackInlet = \busBassFmInstance;
 
-	var outModule = \seccionBajos;
+	var outModule = \bassFmBass;
 
 	// Liberar groups
-	if(~groups[rackName][sectionName][\instanciada] == false,
+	if(~groups[rackName][sectionName][instrumentName][\instanciada] == false,
 		{
 			// El grupo de la seccion de instrumentos se vacía cuando el generador
 			// se vuelve a ejecutar para evitar creación de nuevos buses
 
-			inGroup.do({|instrumentName|
-				~groups[rackName][sectionName].add(instrumentName -> IdentityDictionary.new);
-				~groups[rackName][sectionName][instrumentName].add(\instanciada -> false);
-
-			});
-		
-
 			//Grupo para todas las secciones de instrumentos
-			~groups[rackName][sectionName].add(mainSynthGroup -> ParGroup.head(~groups[nextRackName][nextModuleName]));
+			~groups[rackName][sectionName][instrumentName].add(deviceName -> ParGroup.head(~groups[nextRackName][sectionName][mainSynthGroup]))
 
 
 		}, {
-			s.newBusAllocators;
+			//s.newBusAllocators;
 			~dac[deviceName][\modulos].do({|n| n.free});
+			~dac[deviceName][\buses].do({|n| n.free});
+
 	});
 
 
-	~groups[rackName][sectionName].add(\instanciada -> true);
+	~groups[rackName][sectionName][instrumentName].add(\instanciada -> true);
 
 
 	~dac.add(deviceName -> IdentityDictionary.new);
 
 	//Crear Buses
 	~dac[deviceName].add(
-		\buses -> IdentityDictionary.with(*
+		\buses -> IdentityDictionary.with(*[
+
 			//Buses entrada al módulo de mezcla de sintes
-			Array.fill(rackInlet.size,{arg i; rackInlet[i] -> Bus.audio(s,2)})
-		);
+			rackInlet -> Bus.audio(s,2)
+		]);
 	);
 
 
@@ -56,8 +52,8 @@ s.waitForBoot({
 			rackOutlet -> [
 				~dac[nextDeviceName][\buses][nextBusName]
 			],
-			\inletMezcla ->
-			Array.fill(rackInlet.size,{arg i; ~dac[deviceName][\buses][rackInlet[i]]})
+			rackInlet -> [~dac[deviceName][\buses][rackInlet]],
+			//\inletMezcla ->
 		]);
 	);
 
@@ -67,12 +63,13 @@ s.waitForBoot({
 	~createDevice.value(outModule,
 		{|in, env|
 			var input;
+			//input = CrossoverDistortion.ar(in, amp: 0.5, smooth: 1.2, mul: 0.01, add: 0);
 			input = in;
-			input;
+
 		},
 		nil,
 		2,
-		~dac[deviceName][\lets][\inletMezcla],
+		~dac[deviceName][\lets][rackInlet],
 		~dac[deviceName][\lets][rackOutlet]
 	);
 
@@ -86,16 +83,15 @@ s.waitForBoot({
 			//Mezcla
 			outModule -> Synth(outModule,
 				[\gate,1,\wet,1],
-				target:~groups[rackName][sectionName][mainSynthGroup],
+				target:~groups[rackName][sectionName][instrumentName][deviceName],
 				addAction:\addToTail
 			)
 		]);
 	);
 
 	s.sync;
-	Require("./Electrico/Electric.scd");
-	Require("./BassFm/BassFm.scd");
 };
 )
 );
+
 
