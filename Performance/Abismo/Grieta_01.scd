@@ -223,7 +223,7 @@ s.waitForBoot({
 
             \instrument, \electricBass,
             \dur, Pseq([1.5,4,4.5], inf),
-            \amp,Pseq([0.5,0.7,0.2,0.4,0.6]*3,inf),
+            \amp,Pseq([0.5,0.7,0.7,0.4,0.6]*3,inf),
 			\freq, Pseq([48,44,41,46].midicps,inf),
             \group, ~groups[\SYNTHS][\Bass][\bassElectric][\bassElectricDVC]
     ));

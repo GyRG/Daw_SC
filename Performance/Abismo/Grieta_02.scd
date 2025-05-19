@@ -54,10 +54,10 @@ s.waitForBoot({
         |out = 0, freq = 400, amp = 1|
         var sig, env, envFilter, envNoise, envFreq;
 
-        env = EnvGen.kr(Env([0,0.8,0.1,0],[0.04,0.04],[0,-1]),doneAction:2);
-        envNoise = EnvGen.kr(Env([amp*2,0.1,0.0],[0.07,0.4],[-2,-3]));
-        envFreq = EnvGen.kr(Env([freq*10,freq,freq*0.25],[0.04,0.8],[-1]));
-        envFilter = EnvGen.kr(Env([900,18],[0.4],[-2]));
+        env = EnvGen.kr(Env([0,0.8,0.1,0],[0.04,0.8],[0,-1]),doneAction:2);
+        envNoise = EnvGen.kr(Env([amp,0.1,0.0],[0.01,0.1],[-2,-3]));
+        envFreq = EnvGen.kr(Env([freq*10,freq,freq*0.25],[0.1,0.4],[-1]));
+        envFilter = EnvGen.kr(Env([900,18],[0.7],[0]));
 
         sig = BrownNoise.ar(LFNoise2.kr(freq,envNoise))+LFTri.ar(envFreq);
         sig = HPF.ar(sig,envFilter);
@@ -117,21 +117,19 @@ s.waitForBoot({
 	SynthDef(\fmBass,{
         |out = 0, freq = 50, amp = 0.4, dur = 2, legato = 4|
         var car_0, mod_0, car_1, mod_1, car_2, mod_2, env, sig;
-		env = EnvGen.kr(Env.adsr(0.01,0.3,0.5,1.5,1,-5),\gate.kr(1),doneAction:2);
+		env = EnvGen.kr(Env.adsr(0.001,0.2,0.9,3,1,-1),\gate.kr(1),doneAction:2);
+
 		//env = EnvGen.kr(Env([0,1,0.7,0.3,0],[0.02,2,1,0.01],[-1,2,0]),doneAction:2);
 
+		mod_0 = SinOsc.ar(freq*LFTri.ar(0.1,0,0.01,1),freq,freq);
 
-		mod_0 = Saw.ar(9*freq,1,0);
-		car_0 = LFTri.ar(mod_0);
+		mod_1 = SinOsc.ar(freq*LFTri.ar(0.6,0,0.001,3),freq,freq);
 
-		mod_1 = Saw.ar(7*freq+car_0,1,0);
-		car_1 = LFTri.ar(mod_1);
+		mod_2 = SinOsc.ar(freq*LFTri.ar(0.3,0,0.0004,1.5),freq,freq);
 
+		car_0 = LFTri.ar(freq+mod_0+mod_1+mod_2);
 
-		mod_2 = Saw.ar(freq+car_1,1,0);
-		car_2 = SinOsc.ar(freq*mod_2);
-
-		sig = car_2;
+		sig = car_0 ;
 
         sig  = sig * env *amp;
         Out.ar(~dac[\bassBassFmDVC][\lets][\busBassFmInstance],sig!2)
@@ -143,9 +141,9 @@ s.waitForBoot({
     ~snr= Pdef(\snareBeat,
         Pbind(
             \instrument, \snare,
-            \dur, Pseq([4]/5,inf),
-			\amp, Pseq((0.8!1) ++ (0.6!4),inf),
-            \freq, Pseq([16],inf),
+            \dur, Pseq([1],inf),
+			\amp, Pseq([0.5],inf),
+            \freq, Pseq([8],inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsSnare][\drumsSnareDVC]
     ));
 
@@ -166,11 +164,7 @@ s.waitForBoot({
         Pbind(
             \instrument, \ride,
 
-			\dur, Pseq([
-				Pseq([0.5,0.5,0.25],4),
-				Pseq(0.5!1,3)
-			]/2,inf),
-
+			\dur, Pseq([0.5],inf),
             \amp, Pseq([0.7]*0.5,inf),
 			\freq, Pgauss(Pwrand([68,69,65].midicps,[80,0,0].normalizeSum ,inf),2,inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsRide][\drumsRideDVC]
@@ -180,8 +174,8 @@ s.waitForBoot({
         Pbind(
             \instrument, \crash,
             //\dur, Pwrand([Pseq([0.75],2),Pseq([0.125],3),Pseq([0.25],1)],[10,8,4].reciprocal,inf),
-            \dur, Pseq([6],inf),
-            \amp, Pseq([0.3],inf),
+            \dur, Pseq([5],inf),
+            \amp, Pseq([0.6],inf),
                 \freq, Pseq([70],inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsCrash][\drumsCrashDVC]
     ));
@@ -191,7 +185,7 @@ s.waitForBoot({
         Pbind(
             \instrument, \tomb,
             //\dur, Pwrand([Pseq([0.75],2),Pseq([0.125],3),Pseq([0.25],1)],[10,8,4].reciprocal,inf),
-            \dur, Pseq(1/4!1,inf),
+            \dur, Pseq(1/5!1,inf),
 			\amp, Pseq((0.6!1) ++ (0.2!2) ++ (0.6!1) ++ (0.1!1),inf),
 			\freq, Pseq([420],inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsTomb][\drumsTombDVC]
@@ -202,9 +196,9 @@ s.waitForBoot({
     ~bombos = Pdef(\pulso,
         Pbind(
             \instrument, \bombo,
-            \dur, Pseq([4],inf),
-            \amp,Pseq([0.3],inf),
-            \freq, Pseq([7],inf),
+            \dur, Pseq([2],inf),
+            \amp,Pseq([0.5],inf),
+            \freq, Pseq([6],inf),
             \group, ~groups[\SYNTHS][\Drums][\drumsKick][\drumsKickDVC]
     ));
 
@@ -215,8 +209,8 @@ s.waitForBoot({
 
             \instrument, \fmBass,
             \dur, Pseq([1.5,4,4.5], inf),
-			\legato, 0.5,
-            \amp,Pseq([0.5,0.7,0.2,0.4,0.6],inf),
+			\legato, 0.7,
+            \amp,Pseq([0.5,0.7,0.8,0.4,0.6],inf),
 			\freq, Pseq([48,44,41,46].midicps,inf),
             \group, ~groups[\SYNTHS][\Bass][\bassBassFm][\bassBassFmDVC]
     ));

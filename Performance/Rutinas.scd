@@ -1,5 +1,6 @@
 (
 ~clock_1 = {TempoClock(80/60)}.value;
+~clock_2 = {TempoClock(120/60)}.value;
 
 ~rutinas = Routine({
 	Require("Abismo/Grieta_00.scd");
@@ -32,7 +33,7 @@
 	~snr.play(~clock_1);
 	~bombos.play(~clock_1);
 	~crash.play(~clock_1);
-	16.yield;
+	32.yield;
 	~crash.stop;
 	~pads.stop;
 	~hihat.stop;
@@ -42,9 +43,14 @@
 	~ride.stop;
 	~bassLine.stop;
 	Require("Abismo/Grieta_02.scd");
-	24.yield;
-	~bassLine.play(~clock);
-
+	8.yield;
+	~bassLine.play(~clock_2);
+	~tomb.play(~clock_2);
+	~snr.play(~clock_2);
+	~bombos.play(~clock_2);
+	~crash.play(~clock_2);
+	~hihat.play(~clock_2);
+	~ride.play(~clock_2);
 });
 
 ~rutinas.reset;
