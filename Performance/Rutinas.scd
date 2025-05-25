@@ -1,6 +1,5 @@
 (
-~clock_1 = {TempoClock(80/60)}.value;
-~clock_2 = {TempoClock(120/60)}.value;
+
 
 ~rutinas = Routine({
 	Require("Abismo/Grieta_00.scd");

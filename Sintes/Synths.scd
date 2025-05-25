@@ -6,8 +6,8 @@ s.waitForBoot({
 
 	var deviceName = \SynthsDAC;
 	var mainSynthGroup = \SynthsGroup;
-	var inGroup = [\Drums,\Monos,\Bass,\Pads,\External], outGroup = \MezclaSynths;
-	var rackOutlet = \outletSynths, rackInlet = [\busDrumsSynth,\busPadsSynth,\busBajosSynth,\busMonosSynth,\busSamplers,\busExternoSynth];
+	var inGroup = [\Drums,\Monos,\Bass,\Pads,\External,\Demiurges], outGroup = \MezclaSynths;
+	var rackOutlet = \outletSynths, rackInlet = [\busDrumsSynth,\busPadsSynth,\busBajosSynth,\busMonosSynth,\busSamplers,\busExternoSynth, \busDemiurgesSynth];
 
 	var outModule = \moduloMezclaSynths;
 
@@ -106,6 +106,7 @@ s.waitForBoot({
 	Require("./Pads/Pads.scd");
 	Require("./Monos/Monos.scd");
 	Require("./External/External.scd");
+	Require("./Demiurges/Demiurges.scd");
 };
 )
 );
