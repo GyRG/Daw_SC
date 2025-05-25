@@ -1,7 +1,7 @@
 
 //groups
 Require("Arquitectura/Arquitectura");
-Require("../MaquinaDelTiempo/index.scd");
+Require("MaquinaDelTiempo/index.scd");
 Require("Performance/Fijos.scd");
 
 
