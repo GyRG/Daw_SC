@@ -4,7 +4,7 @@
 ~rutinas = Routine({
 	Require("Abismo/Grieta_00.scd");
 
-	Require("Fijos.scd");
+	//Require("Fijos.scd");
 	4.yield;
 	~pads.play(~clock_1);
 	~hihat.play(~clock_1);

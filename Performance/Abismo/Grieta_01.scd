@@ -185,7 +185,7 @@ s.waitForBoot({
             \group, ~groups[\SYNTHS][\Drums][\drumsKick][\drumsKickDVC]
     ));
 
-    ~pads = Pdef(\chords,
+    ~padSeq = Pdef(\chordProg,
         Pbind(
 
             \instrument, \pads,
@@ -228,7 +228,7 @@ s.waitForBoot({
             \group, ~groups[\SYNTHS][\Bass][\bassElectric][\bassElectricDVC]
     ));
 
-
+~sequencia = [~snr,~hihat,~ride,~crash,~tomb,~bombos,~padSeq,~bassLine];
 });
     )
     

@@ -2,7 +2,8 @@
 s.waitForBoot({
 	if(~freak.value != nil || ~guitar.value != nil || ~lfo_control.value != nil,{ ~freak.free; ~guitar.free; ~lfo_control.free; });
 
-
+	~irBuffer = Buffer.read(s,"/home/s4turn0/SuperCollider/Daw_SC/Sintes/External/Guitar/57_grill_cone_near_pres_4.wav");
+	s.sync;
 SynthDef(\pluggedInstrumentXLR,{
         |out = 0, freq = 50, amp = 0.7, sustain=0.1|
         var sig, env, enf;
@@ -18,7 +19,7 @@ SynthDef(\pluggedInstrumentXLR,{
         var sig, env, enf;
         sig = In.ar(3,1);
 
-
+		//sig = Convolution.ar(sig,~irBuffer ,framesize:~irBuffer.numFrames);
         //sig = LinPan2.ar(sig,SinOsc.kr(0.6,0,1));
         Out.ar(~dac[\externalGuitarDVC][\lets][\busGuitarInstance],sig)
     }).add;

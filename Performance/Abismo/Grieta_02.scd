@@ -214,7 +214,7 @@ s.waitForBoot({
 			\freq, Pseq([48,44,41,46].midicps,inf),
             \group, ~groups[\SYNTHS][\Bass][\bassBassFm][\bassBassFmDVC]
     ));
-
+~sequencia = [~snr,~hihat,~ride,~crash,~tomb,~bombos,~padSeq,~bassline];
 
 });
     )
